@@ -157,7 +157,7 @@ def test_run_pipeline_persists_results_and_returns_withheld_dds(db_session, geoj
 
 @pytest.mark.postgis
 def test_run_pipeline_is_idempotent(db_session, geojson_path):
-    from veritas_eudr.db import Plot
+    from veritas_eudr.db import EvidenceLedger, Plot, PlotResult
 
     r1 = run_pipeline(
         geojson_path,
@@ -167,6 +167,8 @@ def test_run_pipeline_is_idempotent(db_session, geojson_path):
     )
     db_session.flush()
     plots_after_first = db_session.query(Plot).count()
+    results_after_first = db_session.query(PlotResult).count()
+    evidence_after_first = db_session.query(EvidenceLedger).count()
 
     r2 = run_pipeline(
         geojson_path,
@@ -176,7 +178,14 @@ def test_run_pipeline_is_idempotent(db_session, geojson_path):
     )
     db_session.flush()
     plots_after_second = db_session.query(Plot).count()
+    results_after_second = db_session.query(PlotResult).count()
+    evidence_after_second = db_session.query(EvidenceLedger).count()
 
     # Re-running the identical file adds no new plots and replays the same run_id.
     assert plots_after_second == plots_after_first
     assert r1["run_id"] == r2["run_id"]
+
+    # And it appends no second set of plot_results / evidence_ledger rows: the
+    # durable record is idempotent on the content-derived run_id.
+    assert results_after_second == results_after_first
+    assert evidence_after_second == evidence_after_first

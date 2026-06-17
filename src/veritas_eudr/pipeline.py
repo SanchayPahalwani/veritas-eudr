@@ -221,6 +221,7 @@ def run_pipeline(
     the per-plot ``PlotOutcome`` list; ``dds`` is the ``DueDiligenceStatement``.
     """
     from geoalchemy2.shape import to_shape
+    from sqlalchemy import select
 
     from veritas_eudr.db import EvidenceLedger, PlotResult
     from veritas_eudr.ingest import parse_submission
@@ -244,6 +245,17 @@ def run_pipeline(
 
     if provider is None:
         provider = deforestation_mod.RasterProvider(settings)
+
+    # Idempotency on run_id: if this content-derived run was already recorded, the
+    # durable record (plot_results + evidence_ledger) is already written. Replaying
+    # the identical input must be a no-op on the append-only ledger -- no second set
+    # of rows -- so we recompute the outcomes/DDS in memory but SKIP the writes.
+    already_recorded = (
+        session.execute(
+            select(PlotResult).where(PlotResult.run_id == run_id).limit(1)
+        ).scalar_one_or_none()
+        is not None
+    )
 
     # 3. Recompute per plot, write the durable record.
     outcomes: list[PlotOutcome] = []
@@ -269,30 +281,33 @@ def run_pipeline(
         # PlotResult per the shared contract: validation/area/risk JSON. For an
         # unsampleable plot the area/risk columns hold an empty object (the plot
         # is recorded with its validation findings but carries no measurement).
-        session.add(
-            PlotResult(
-                run_id=run_id,
-                plot_id=plot.id,
-                validation_report=report.model_dump(mode="json"),
-                area=measurement.model_dump(mode="json") if measurement is not None else {},
-                risk=profile.model_dump(mode="json") if profile is not None else {},
-            )
-        )
-        if profile is not None:
-            # One append-only evidence row per RiskProfile evidence item.
-            for record in profile.evidence:
-                session.add(
-                    EvidenceLedger(
-                        run_id=record.run_id,
-                        plot_id=record.plot_id,
-                        dataset_name=record.dataset_name,
-                        dataset_version=record.dataset_version,
-                        rule_id=record.rule_id,
-                        pixel_value=record.pixel_value,
-                        covered_fraction=record.covered_fraction,
-                        verdict=record.verdict,
-                    )
+        # Skipped on a replay (the run is already recorded) to keep the durable
+        # record idempotent on run_id.
+        if not already_recorded:
+            session.add(
+                PlotResult(
+                    run_id=run_id,
+                    plot_id=plot.id,
+                    validation_report=report.model_dump(mode="json"),
+                    area=measurement.model_dump(mode="json") if measurement is not None else {},
+                    risk=profile.model_dump(mode="json") if profile is not None else {},
                 )
+            )
+            if profile is not None:
+                # One append-only evidence row per RiskProfile evidence item.
+                for record in profile.evidence:
+                    session.add(
+                        EvidenceLedger(
+                            run_id=record.run_id,
+                            plot_id=record.plot_id,
+                            dataset_name=record.dataset_name,
+                            dataset_version=record.dataset_version,
+                            rule_id=record.rule_id,
+                            pixel_value=record.pixel_value,
+                            covered_fraction=record.covered_fraction,
+                            verdict=record.verdict,
+                        )
+                    )
 
         outcomes.append(
             PlotOutcome(

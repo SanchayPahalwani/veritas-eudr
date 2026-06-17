@@ -23,15 +23,20 @@ in ``conftest.py``; the body still uses the ``database_url`` fixture which calls
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
+from sqlalchemy.engine import URL, make_url
 
 pytestmark = pytest.mark.postgis
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ALEMBIC_INI = PROJECT_ROOT / "alembic.ini"
+
+# A dedicated, throwaway database the migration tests own outright. It is created
+# fresh and dropped per session and NEVER overlaps the shared database every other
+# postgis-marked test depends on, so this suite cannot poison that shared state.
+MIGTEST_DB_NAME = "veritas_migtest"
 
 EXPECTED_TABLES = {
     "ingestion_runs",
@@ -42,38 +47,80 @@ EXPECTED_TABLES = {
 }
 
 
-@pytest.fixture()
-def migrated_engine(database_url):
-    """Apply ``alembic upgrade head`` to a fresh schema, yield a connected engine.
+def _with_database(url: URL, database: str) -> URL:
+    """Return ``url`` repointed at ``database`` on the same server."""
+    return url.set(database=database)
 
-    We drop the public schema (and the alembic version table) up-front so the run
-    starts from nothing, then run the migration via the Alembic Python API with the
-    DB URL injected so it matches the conftest URL exactly.
+
+def _drop_migtest_db(maintenance_url: URL) -> None:
+    """Drop the throwaway database, terminating any lingering connections first."""
+    from sqlalchemy import create_engine, text
+
+    admin = create_engine(maintenance_url, future=True, isolation_level="AUTOCOMMIT")
+    try:
+        with admin.connect() as conn:
+            # Terminate other backends still attached to the throwaway DB so the
+            # DROP cannot be blocked by a stray connection.
+            conn.execute(
+                text(
+                    "SELECT pg_terminate_backend(pid) FROM pg_stat_activity "
+                    "WHERE datname = :db AND pid <> pg_backend_pid()"
+                ),
+                {"db": MIGTEST_DB_NAME},
+            )
+            conn.execute(text(f'DROP DATABASE IF EXISTS "{MIGTEST_DB_NAME}"'))
+    finally:
+        admin.dispose()
+
+
+@pytest.fixture(scope="session")
+def migrated_engine(database_url):
+    """Run ``alembic upgrade head`` against a DEDICATED throwaway database.
+
+    The shared database (``database_url``) is left exactly as found: we never touch
+    its ``public`` schema. Instead we connect to the server's ``postgres``
+    maintenance database with autocommit, (re)create ``veritas_migtest`` from
+    scratch, run the migration against it, and yield an engine bound to it. On
+    teardown we dispose the engine and drop ``veritas_migtest`` (terminating any
+    remaining connections first), so repeated runs against the same persistent
+    server stay deterministic.
     """
     from alembic import command
     from alembic.config import Config
     from sqlalchemy import create_engine, text
 
-    engine = create_engine(database_url, future=True)
+    shared_url = make_url(database_url)
+    maintenance_url = _with_database(shared_url, "postgres")
+    migtest_url = _with_database(shared_url, MIGTEST_DB_NAME)
 
-    # Fresh slate: drop and recreate the public schema. spatial_ref_sys etc. live
-    # in public and are recreated by "CREATE EXTENSION postgis" in the migration.
-    with engine.begin() as conn:
-        conn.execute(text("DROP SCHEMA public CASCADE"))
-        conn.execute(text("CREATE SCHEMA public"))
+    # Fresh slate: drop any leftover throwaway DB, then create it anew. DROP/CREATE
+    # DATABASE cannot run inside a transaction, so use an autocommit connection on
+    # the maintenance database.
+    _drop_migtest_db(maintenance_url)
+    admin = create_engine(maintenance_url, future=True, isolation_level="AUTOCOMMIT")
+    try:
+        with admin.connect() as conn:
+            conn.execute(text(f'CREATE DATABASE "{MIGTEST_DB_NAME}"'))
+    finally:
+        admin.dispose()
+
+    migtest_url_str = migtest_url.render_as_string(hide_password=False)
 
     cfg = Config(str(ALEMBIC_INI))
     cfg.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
-    # Ensure env.py reads exactly this URL (it falls back to get_settings()).
-    os.environ["VERITAS_DATABASE_URL"] = database_url
-    cfg.set_main_option("sqlalchemy.url", database_url)
+    # Pin the URL explicitly on the Config; env.py treats an explicit
+    # sqlalchemy.url as highest precedence, so we never mutate process env or
+    # touch the shared DB.
+    cfg.set_main_option("sqlalchemy.url", migtest_url_str)
 
     command.upgrade(cfg, "head")
 
+    engine = create_engine(migtest_url_str, future=True)
     try:
         yield engine
     finally:
         engine.dispose()
+        _drop_migtest_db(maintenance_url)
 
 
 def test_five_tables_exist(migrated_engine):
