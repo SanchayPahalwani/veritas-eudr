@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Veritas EUDR &mdash; plot risk map (read-only)</title>
+
+    <!-- Vendored, pinned MapLibre GL JS 4.7.1 (no live CDN at runtime). -->
+    <link rel="stylesheet" href="vendor/maplibre-gl.css" />
+    <script src="vendor/maplibre-gl.js"></script>
+    <!-- Vendored, pinned pmtiles 3.2.1 protocol (self-hosted basemap). -->
+    <script src="vendor/pmtiles.js"></script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      #map {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* Legend (top-left). Explains the risk colour ramp + the band-21 flag. */
+      .legend {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid #d4d4d4;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 12px;
+        line-height: 1.5;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        max-width: 240px;
+      }
+      .legend h1 {
+        font-size: 13px;
+        margin: 0 0 6px;
+        font-weight: 600;
+      }
+      .legend .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .legend .swatch {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        flex: 0 0 auto;
+      }
+      .legend .note {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #e2e2e2;
+        color: #444;
+      }
+      .legend .ring {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        border: 2px solid #1565c0;
+        background: transparent;
+        vertical-align: middle;
+        margin-right: 4px;
+      }
+
+      /* Popup contents. */
+      .plot-popup h2 {
+        font-size: 13px;
+        margin: 0 0 4px;
+      }
+      .plot-popup dl {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .plot-popup dt {
+        font-weight: 600;
+        color: #555;
+      }
+      .plot-popup dd {
+        margin: 0 0 6px;
+      }
+      .plot-popup .band21 {
+        margin-top: 6px;
+        padding: 6px 8px;
+        background: #fff8e1;
+        border-left: 3px solid #f9a825;
+        border-radius: 3px;
+        font-size: 11.5px;
+      }
+      .maplibregl-popup-content {
+        max-width: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="legend">
+      <h1>Plot deforestation risk</h1>
+      <div class="row">
+        <span class="swatch" style="background: #2e7d32"></span> low
+      </div>
+      <div class="row">
+        <span class="swatch" style="background: #c62828"></span> high
+      </div>
+      <div class="row">
+        <span class="swatch" style="background: #f9a825"></span>
+        more-info-needed
+      </div>
+      <div class="row">
+        <span class="swatch" style="background: #9e9e9e"></span> not assessed
+      </div>
+      <div class="note">
+        <span class="ring"></span> Highlighted ring = Hansen band-21
+        boundary-uncertain (post-cutoff loss only in calendar 2021, the latency
+        band). Click any plot for its validation disposition and evidence trail.
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
