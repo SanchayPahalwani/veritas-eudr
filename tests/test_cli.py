@@ -11,6 +11,7 @@ unit tests never bind a port or require a database:
 from __future__ import annotations
 
 import json
+import os
 
 import pytest
 
@@ -227,6 +228,10 @@ def test_migrate_calls_alembic_upgrade_head(monkeypatch):
     class _FakeConfig:
         def __init__(self, path):
             self.path = path
+            self.main_options = {}
+
+        def set_main_option(self, name, value):
+            self.main_options[name] = value
 
     fake_config_mod.Config = _FakeConfig
 
@@ -241,6 +246,11 @@ def test_migrate_calls_alembic_upgrade_head(monkeypatch):
     assert rc == 0
     assert calls["revision"] == "head"
     assert str(calls["cfg"].path).endswith("alembic.ini")
+    # script_location is pinned to an absolute migrations path so `migrate` works
+    # from any cwd, not just the repo root.
+    script_location = calls["cfg"].main_options["script_location"]
+    assert script_location.endswith("migrations")
+    assert os.path.isabs(script_location)
 
 
 def test_disposition_enum_importable():

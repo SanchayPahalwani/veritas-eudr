@@ -124,6 +124,9 @@ def _cmd_migrate(args: argparse.Namespace) -> int:
     from veritas_eudr.config import PROJECT_ROOT
 
     cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
+    # alembic.ini's script_location is relative ("migrations"), so resolve it to an
+    # absolute path; otherwise `veritas-eudr migrate` fails outside the repo root.
+    cfg.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
     command.upgrade(cfg, "head")
     return 0
 

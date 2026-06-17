@@ -59,11 +59,51 @@ def db_session(database_url):
         engine.dispose()
 
 
+_POSTGIS_PROBE: tuple[bool, str] | None = None
+
+
+def _postgis_skip_reason() -> str | None:
+    """Return a skip reason for postgis-marked tests, or None to run them.
+
+    Probes once and caches: no DB URL -> skip; DB URL set but the PostGIS
+    functions / migrations are absent -> skip with a clear, actionable reason
+    instead of letting the tests fail with a raw "function st_geomfromtext does
+    not exist".
+    """
+    global _POSTGIS_PROBE
+    if _POSTGIS_PROBE is not None:
+        return _POSTGIS_PROBE[1] or None
+
+    url = _database_url()
+    if not url:
+        _POSTGIS_PROBE = (True, "no DATABASE_URL; PostGIS integration test skipped")
+        return _POSTGIS_PROBE[1]
+
+    from sqlalchemy import create_engine, text
+
+    engine = create_engine(url, future=True)
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT PostGIS_Lib_Version()"))
+    except Exception:
+        _POSTGIS_PROBE = (
+            True,
+            "DB reachable but PostGIS/migrations absent; run `alembic upgrade head` first",
+        )
+        return _POSTGIS_PROBE[1]
+    finally:
+        engine.dispose()
+
+    _POSTGIS_PROBE = (False, "")
+    return None
+
+
 def pytest_collection_modifyitems(config, items):
-    """Auto-skip postgis-marked tests when no DB URL is configured."""
-    if _database_url():
+    """Auto-skip postgis-marked tests when the DB is unavailable or not migrated."""
+    reason = _postgis_skip_reason()
+    if reason is None:
         return
-    skip = pytest.mark.skip(reason="no DATABASE_URL; PostGIS integration test skipped")
+    skip = pytest.mark.skip(reason=reason)
     for item in items:
         if "postgis" in item.keywords:
             item.add_marker(skip)

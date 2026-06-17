@@ -306,5 +306,6 @@ def test_reference_numbers_are_distinct_per_call():
 
 def test_geojson_is_json_serializable():
     fc = build_eudr_geojson([("plot-clean", _clean_square())])
-    # The payload must serialize cleanly (it is hashed/submitted downstream).
-    json.dumps(fc)
+    # The payload must serialize cleanly (it is hashed/submitted downstream) and
+    # round-trip back to the expected FeatureCollection shape.
+    assert json.loads(json.dumps(fc))["type"] == "FeatureCollection"
