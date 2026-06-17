@@ -26,8 +26,13 @@ docker compose up --build          # postgis + app: migrate -> seed the messy de
 
 # walk one messy submission to a withheld DDS:
 curl -s localhost:8000/consignments/DEMO/dds | jq '{compliance_complete, legality_status, deforestation_determination, due_diligence_path, country_risk_class, n_plots: (.geojson.features|length)}'
-curl -s localhost:8000/plots/<plot_id>/risk    # rolled-up disposition + risk + evidence
-curl -s localhost:8000/runs/<run_id>/replay     # the append-only evidence trail
+
+# plot/run ids are content hashes (not the human submission ids), so read a real plot id
+# out of the DDS, then drill into its rolled-up risk and the run's evidence trail:
+plot=$(curl -s localhost:8000/consignments/DEMO/dds | jq -r '.plot_ids[0]')
+curl -s localhost:8000/plots/$plot/risk | jq '{plot_id, assessed, risk: .risk.risk, disposition: .validation.disposition}'
+run=$(curl -s localhost:8000/plots/$plot/risk | jq -r '.risk.evidence[0].run_id')
+curl -s localhost:8000/runs/$run/replay | jq '{run_id, n_evidence: (.evidence|length)}'
 ```
 
 `docker compose up` is the primary, reproducible delivery. The image pins
