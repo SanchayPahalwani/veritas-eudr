@@ -29,17 +29,23 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Runtime tooling only:
+# Runtime tooling + the one base system lib the wheels expect (but don't bundle):
 # - postgresql-client gives `pg_isready`, used by the entrypoint to wait for the
 #   DB before migrating. It is NOT a build dependency of the wheels.
-# - No GDAL/PROJ/GEOS packages: the wheels carry their own (see header).
+# - libexpat1 (libexpat.so.1): GDAL's XML drivers link it, but it's on the
+#   manylinux whitelist, so the rasterio wheel deliberately does NOT vendor it --
+#   it expects libexpat.so.1 from the system. python:3.12-slim doesn't ship it as
+#   a discoverable shared object, so `import rasterio` fails with
+#   "libexpat.so.1: cannot open shared object file" without this. This is NOT a
+#   contradiction of the no-GDAL/PROJ/GEOS rule (see header): those *are* bundled;
+#   libexpat is a whitelisted base lib the bundling step intentionally skips.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends postgresql-client \
+    && apt-get install -y --no-install-recommends postgresql-client libexpat1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy the build inputs needed to `pip install .`:
+# Copy the build inputs needed to `pip install -e .`:
 # - pyproject.toml: project metadata + pinned dependency ranges.
 # - src/: the package (hatchling builds the wheel from src/veritas_eudr).
 # Everything else (policy, migrations, sql, scripts, fixtures) is copied below so
@@ -48,9 +54,17 @@ WORKDIR /app
 COPY pyproject.toml README.md ./
 COPY src ./src
 
-# Install the project itself (resolves and installs the pinned dependency tree,
-# pulling the bundled-GDAL wheels). `.` installs from pyproject in the WORKDIR.
-RUN pip install .
+# Install the project (resolves and installs the pinned dependency tree, pulling
+# the bundled-GDAL wheels). EDITABLE (-e) on purpose: config.PROJECT_ROOT is
+# `Path(__file__).resolve().parents[2]`, so the package must import from
+# /app/src/veritas_eudr/ for PROJECT_ROOT to resolve to /app -- the directory the
+# COPYs below populate with policy/migrations/sql/fixtures/alembic.ini. A plain
+# (non-editable) `pip install .` would import from site-packages instead, making
+# PROJECT_ROOT /usr/local/lib/python3.12 and breaking migrate/seed/serve (alembic:
+# "Path doesn't exist: /usr/local/lib/python3.12/migrations"). The dependency
+# wheels are still installed normally into site-packages; only this project is a
+# link back to /app/src.
+RUN pip install -e .
 
 # Runtime data the package reads at run/migrate time. config.PROJECT_ROOT resolves
 # to /app (parents[2] of /app/src/veritas_eudr/config.py), so these paths line up

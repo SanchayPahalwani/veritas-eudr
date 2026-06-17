@@ -104,3 +104,50 @@ jobs:
           echo "--- GET /consignments/DEMO/dds ---"
           curl -fsS http://127.0.0.1:8000/consignments/DEMO/dds
           echo
+
+  # The `test` job above exercises the CLI -> DB -> API path against a PostGIS
+  # *service* container, but never builds the image -- so the README's PRIMARY
+  # delivery (`docker compose up --build`) could regress while CI stays green.
+  # This job builds and runs the full compose stack. A build-only step would catch
+  # only build-time breakage (e.g. a missing runtime lib surfacing in the Dockerfile
+  # import check); the PGDATA mount path and the editable-install PROJECT_ROOT
+  # resolution fail only at *runtime*, so we actually start the stack and walk the
+  # documented curl flow. GitHub runners are native amd64, so the amd64 pin runs
+  # without emulation.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image + start the stack (docker compose up --build)
+        run: docker compose up --build -d
+
+      - name: Walk the README happy path against the running container
+        run: |
+          set -euo pipefail
+          # Wait for the app entrypoint (wait-for-db -> migrate -> seed -> serve).
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8000/health >/dev/null; then echo "API is up."; break; fi
+            if [ "${i}" -eq 60 ]; then echo "API did not become healthy in time." >&2; exit 1; fi
+            sleep 3
+          done
+          # The seeded DDS must have plots; discover a real (content-hash) plot id
+          # from it, then drill into the plot risk and the run's evidence trail --
+          # exactly the flow documented in the README.
+          curl -fsS http://localhost:8000/consignments/DEMO/dds | tee /tmp/dds.json \
+            | jq -e '.plot_ids | length > 0' >/dev/null
+          plot=$(jq -r '.plot_ids[0]' /tmp/dds.json)
+          curl -fsS "http://localhost:8000/plots/${plot}/risk" | tee /tmp/risk.json \
+            | jq -e '.plot_id and .assessed' >/dev/null
+          run=$(jq -r '.risk.evidence[0].run_id' /tmp/risk.json)
+          curl -fsS "http://localhost:8000/runs/${run}/replay" | jq -e '.evidence | length > 0' >/dev/null
+          echo "Docker happy path OK: plot=${plot} run=${run}"
+
+      - name: Dump compose logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v

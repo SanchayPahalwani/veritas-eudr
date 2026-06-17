@@ -31,7 +31,12 @@ services:
       retries: 20
       start_period: 10s
     volumes:
-      - veritas_pgdata:/var/lib/postgresql/data
+      # PostgreSQL 18 images moved PGDATA to a version-scoped subdir
+      # (/var/lib/postgresql/18/docker) and expect the persistent mount at
+      # /var/lib/postgresql -- NOT the legacy /var/lib/postgresql/data. Mounting the
+      # old path makes the 18+ entrypoint refuse to start ("there appears to be
+      # PostgreSQL data in /var/lib/postgresql/data (unused mount/volume)").
+      - veritas_pgdata:/var/lib/postgresql
 
   app:
     build:
