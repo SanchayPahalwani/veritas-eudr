@@ -1,0 +1,24 @@
+# Produced offline with no AWS account. The stack is intentionally never applied; this file records validate/fmt-check results only.
+
+--- terraform version ---
+Terraform v1.9.8
+on darwin_arm64
++ provider registry.terraform.io/hashicorp/aws v5.100.0
++ provider registry.terraform.io/hashicorp/random v3.9.0
+
+--- terraform init -backend=false ---
+Initializing provider plugins...
+- Finding hashicorp/aws versions matching "~> 5.0"...
+- Finding latest version of hashicorp/random...
+- Installing hashicorp/aws v5.100.0...
+- Installed hashicorp/aws v5.100.0 (signed by HashiCorp)
+- Installing hashicorp/random v3.9.0...
+- Installed hashicorp/random v3.9.0 (signed by HashiCorp)
+Terraform has been successfully initialized!
+
+--- terraform validate ---
+Success! The configuration is valid.
+
+--- terraform fmt -check -recursive ---
+(no output — all files already formatted)
+exit code: 0
