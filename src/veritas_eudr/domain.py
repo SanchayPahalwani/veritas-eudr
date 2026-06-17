@@ -21,7 +21,7 @@ from __future__ import annotations
 from datetime import UTC, date, datetime
 from enum import StrEnum
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 # --------------------------------------------------------------------------- #
 # Primitives
@@ -161,6 +161,7 @@ class ValidationReport(BaseModel):
     repaired_geometry_wkt: str | None = None
     notes: list[str] = Field(default_factory=list)
 
+    @computed_field  # serialized into the wire format -- the rolled-up disposition is the key output
     @property
     def disposition(self) -> Disposition:
         if not self.findings:
@@ -168,6 +169,7 @@ class ValidationReport(BaseModel):
         worst = max(self.findings, key=lambda f: _DISPOSITION_RANK[f.disposition])
         return worst.disposition
 
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def needs_review(self) -> bool:
         return self.disposition == Disposition.NEEDS_REVIEW
@@ -270,6 +272,7 @@ class RiskProfile(BaseModel):
         default=False, description="e.g. Hansen lossyear band 21 latency (tripwire B)."
     )
 
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def whisp_risk_pcrop(self) -> str:
         # Identity map to Whisp's Risk_PCrop tri-state, surfaced for the confusion matrix.
