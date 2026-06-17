@@ -1,0 +1,130 @@
+# veritas-eudr policy -- the regulation is the definition of correctness, so it
+# lives as versioned, reviewable data, not buried in code. Every API response is
+# stamped with `policy_version`. Access dates are when each source was last
+# verified for this build.
+#
+# This is an independent learning project. Citations are provided so a reviewer
+# can check every claim; nothing here is legal advice.
+
+policy_version: "2026-06-17"
+
+regulation:
+  base:
+    name: "Regulation (EU) 2023/1115 (EUDR)"
+    celex: "32023R1115"
+    access_date: "2026-06-17"
+  amendment:
+    name: "Regulation (EU) 2025/2650 (amends 2023/1115)"
+    celex: "32025R2650"
+    oj_date: "2025-12-23"
+    access_date: "2026-06-17"
+    application_dates:
+      medium_large_operators: "2026-12-30"
+      micro_small_operators: "2027-06-30"
+    notes: >
+      2025/2650 removed DDS submission for downstream operators/traders: only the
+      operator placing product on the EU market still submits a DDS; the first
+      downstream actor retains the reference number (kept 5 years). It also added
+      a one-time declaration path for micro/small primary operators in low-risk
+      countries.
+  benchmarking:
+    name: "Commission Implementing Regulation (EU) 2025/1093 (country benchmarking)"
+    celex: "32025R1093"
+    adopted_date: "2025-05-22"
+    access_date: "2026-06-17"
+    notes: >
+      Benchmarking is Commission-revisable (first review due 2026). The 9 July 2025
+      European Parliament objection was non-binding.
+  geojson_file_description:
+    name: "EUDR GeoJson File Description"
+    version: "1.5"
+    dated: "2025-05-05"
+    access_date: "2026-06-17"
+
+# Kept DISTINCT on purpose (tripwire J): the cutoff is the deforestation-free
+# boundary; the application date is when obligations start to apply.
+deforestation_cutoff_date: "2020-12-31"
+regulation_application_date: "2026-12-30" # medium/large operators
+
+# 4 ha rule is a geolocation SUBMISSION-FORMAT boundary (Art. 9(1)(d)), and is
+# COMMODITY-SCOPED. Cattle are excepted. Only coffee is implemented here.
+geolocation_format:
+  area_threshold_ha: 4.0
+  rule: "plots < 4 ha may submit a single point; plots >= 4 ha must submit a polygon of the perimeter"
+  commodity_scoped: true
+  cattle_excepted: true
+
+country_risk:
+  VN:
+    class: low
+    due_diligence_path: simplified_dd
+    notes: >
+      Low-risk (2025/1093) -> simplified due diligence (Art. 13): skips the Art. 10
+      risk assessment and Art. 11 mitigation and uses a 1% (not 3%) inspection rate,
+      BUT Art. 9 information collection (plot-level geolocation), DDS submission and
+      5-year retention still apply in full. "Low-risk != no diligence."
+
+commodities:
+  coffee:
+    implemented: true
+    hs_examples: ["0901"]
+    aoi: "Vietnam Central Highlands (robusta)"
+
+# Convergence-of-evidence tiering. Mirrors Whisp's documented Risk_PCrop decision
+# tree (credited; not novel). Keyed off the cutoff. Never a single dataset.
+risk_tiers:
+  low:
+    any_of:
+      - "outside the 2020 forest baseline"
+      - "crop/commodity land-cover context present"
+      - "disturbance only before 2021"
+  high:
+    all_of:
+      - "inside 2020 forest baseline"
+      - "no commodity/ag use at end-2020"
+      - "no pre-2020 disturbance"
+      - "post-cutoff loss with meaningful overlap (coverage >= threshold)"
+  more_info_needed:
+    any_of:
+      - "inside 2020 forest, no context"
+      - "boundary-uncertain (e.g. Hansen lossyear band 21 latency)"
+      - "single-edge-pixel signal below coverage threshold"
+
+thresholds:
+  loss_coverage_threshold_frac: 0.10 # tripwire C: ground-hectare coverage, not bare intersects
+  area_borderline_band_ha: 0.10 # 4 ha format boundary tolerance
+  repair_area_epsilon_frac: 0.01 # tripwire F: AUTO_FIXED only if area ~unchanged
+
+dds_validity:
+  valid_for_days: 365 # Art. 12: submission + 1 year
+  annual_review_required: true
+
+# Datasets. Open licenses first; NonCommercial / attribution-required flagged.
+datasets:
+  - name: "Hansen GFC-2025-v1.13 lossyear"
+    role: "post-2020 tree-cover-loss time series (2000-2025), ~30.92 m at equator, EPSG:4326 1 arc-sec degree grid"
+    version: "GFC-2025-v1.13"
+    license: "CC-BY 4.0"
+    encoding: "lossyear 1..25 == 2001..2025; 0 == no loss"
+  - name: "JRC GFC2020 V3"
+    role: "forest-at-cutoff baseline, 10 m, px=1=forest, excludes plantations by definition"
+    version: "V3"
+    license: "free of charge, attribution required (EC reuse notice)"
+    citation: "Bourgoin et al. 2026, ESSD 18:1331-1365"
+    caveat: "empirically over-maps ~18% of trees-for-agricultural-use (shaded coffee) as forest (tripwire L)"
+  - name: "ESA WorldCover v200"
+    role: "land-cover CONTEXT (crop/tree) -- NOT a commodity layer (tripwire E)"
+    version: "v200"
+    license: "CC-BY 4.0"
+  - name: "Sample Earth (CIAT/Alliance)"
+    role: "land-cover REFERENCE points (~100k); filtered to coffee/cocoa classes for commodity coordinates"
+    license: "CC-BY-NC 4.0 (NonCommercial)"
+    doi: "10.7910/DVN/U7HWY1"
+  - name: "FDaP coffee commodity model 2025b"
+    role: "OPTIONAL 4th convergence axis: commodity-presence probability"
+    version: "model_2025b"
+    license: "CC-BY 4.0 (2025b COGs; NOT the 2025a CC-BY-NC EE model)"
+    optional: true
+  - name: "Whisp hosted REST API"
+    role: "self-grading reference (cached to fixtures); emits indicators + final Risk_PCrop tri-state"
+    license: "see Whisp terms"

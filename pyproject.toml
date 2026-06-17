@@ -1,0 +1,80 @@
+[project]
+name = "veritas-eudr"
+version = "0.1.0"
+description = "Walk a messy smallholder farm list through the EUDR backend spine: ingest -> validate/repair -> intersect public deforestation rasters -> risk -> Due Diligence Statement, with a replayable evidence trail."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Sanchay Pahalwani" }]
+
+# Dependencies are pinned to compatible ranges. The reproducible-build contract
+# is the pinned Docker image digest + the rasterio wheel pin below; bare-metal
+# `pip install` of the geospatial stack is NOT a supported path (GDAL/PROJ ABI).
+dependencies = [
+  "fastapi>=0.115,<0.200",
+  "uvicorn[standard]>=0.30,<0.40",
+  "pydantic>=2.7,<3",
+  "pydantic-settings>=2.3,<3",
+  "sqlalchemy>=2.0,<2.1",
+  "geoalchemy2>=0.15,<0.20",
+  "alembic>=1.13,<2",
+  "psycopg[binary]>=3.1,<4",
+  # Geospatial: rasterio bundles its own GDAL/PROJ/GEOS in the wheel, so the
+  # wheel pin IS the GDAL pin. Do not hardcode a GDAL version string in prose.
+  "rasterio>=1.5,<1.6",
+  "shapely>=2.0,<3",
+  "pyproj>=3.6,<4",
+  "geopandas>=1.0,<2",
+  # exactextract is the ONLY zonal-stats engine. rasterstats is deliberately
+  # not a dependency: it offers only centroid-in-polygon or binary all_touched,
+  # no partial-pixel weighting -> over-counts edge pixels (correctness tripwire C).
+  "exactextract>=0.3.0,<0.4",
+  "numpy>=1.26,<3",
+  "pandas>=2.0,<3",
+  "openpyxl>=3.1,<4",
+  "pyyaml>=6.0,<7",
+  "httpx>=0.27,<0.29",
+  "prometheus-client>=0.20,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0,<9",
+  "pytest-cov>=5.0,<7",
+  "ruff>=0.6,<1",
+  "black>=24.0,<26",
+]
+
+[project.scripts]
+veritas-eudr = "veritas_eudr.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/veritas_eudr"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "postgis: integration test that requires a live PostGIS DATABASE_URL (skipped if unset)",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = ["E501"]  # black owns line length
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.coverage.run]
+source = ["src/veritas_eudr"]
+branch = true
