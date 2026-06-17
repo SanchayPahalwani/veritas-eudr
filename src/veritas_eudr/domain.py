@@ -18,8 +18,8 @@ Regulatory pins (see policy/eudr_policy.yaml for CELEX + access dates):
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
-from enum import Enum
+from datetime import UTC, date, datetime
+from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -34,7 +34,7 @@ Position = list[float]
 
 def utcnow() -> datetime:
     """Timezone-aware UTC now (never naive)."""
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 # --------------------------------------------------------------------------- #
@@ -42,7 +42,7 @@ def utcnow() -> datetime:
 # --------------------------------------------------------------------------- #
 
 
-class Disposition(str, Enum):
+class Disposition(StrEnum):
     """What the system did with a plot/finding.
 
     The senior signal of this project is the judgment about what NOT to
@@ -55,13 +55,13 @@ class Disposition(str, Enum):
     NEEDS_REVIEW = "NEEDS_REVIEW"  # a human must decide; do not auto-repair
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     INFO = "INFO"
     WARNING = "WARNING"
     ERROR = "ERROR"
 
 
-class RiskTier(str, Enum):
+class RiskTier(StrEnum):
     """Convergence-of-evidence verdict. Values map ONE-TO-ONE to Whisp's
     ``Risk_PCrop`` tri-state (Low / High / More info needed) so the self-grading
     diff is a clean 3x3 confusion matrix. This tiering mirrors Whisp's documented
@@ -73,7 +73,7 @@ class RiskTier(str, Enum):
     MORE_INFO_NEEDED = "more-info-needed"
 
 
-class RequiredGeometryFormat(str, Enum):
+class RequiredGeometryFormat(StrEnum):
     """EUDR Art. 9(1)(d) geolocation SUBMISSION-FORMAT boundary (not a
     compliance pass/fail): plots < 4 ha may submit a single point; plots >= 4 ha
     must submit a polygon of the perimeter (cattle excepted)."""
@@ -82,7 +82,7 @@ class RequiredGeometryFormat(str, Enum):
     POLYGON = "polygon"
 
 
-class LegalityStatus(str, Enum):
+class LegalityStatus(StrEnum):
     """Art. 2 legality (eight documentary categories) is NOT derivable from
     public geospatial rasters. The only reachable state is NOT_ASSESSED -- we
     model the gap honestly rather than fake a legality finding."""
@@ -90,7 +90,7 @@ class LegalityStatus(str, Enum):
     NOT_ASSESSED = "NOT_ASSESSED"
 
 
-class DueDiligencePath(str, Enum):
+class DueDiligencePath(StrEnum):
     """Three distinct EUDR paths. Do not conflate the latter two.
 
     - FULL_DD: standard/high-risk AOIs (Art. 8-11).
@@ -105,7 +105,7 @@ class DueDiligencePath(str, Enum):
     MICRO_SMALL_PRIMARY_ONE_TIME = "micro_small_primary_one_time"
 
 
-class CountryRiskClass(str, Enum):
+class CountryRiskClass(StrEnum):
     """Commission Implementing Regulation (EU) 2025/1093 benchmarking."""
 
     LOW = "low"
@@ -113,7 +113,7 @@ class CountryRiskClass(str, Enum):
     HIGH = "high"
 
 
-class SamplingStrategy(str, Enum):
+class SamplingStrategy(StrEnum):
     """How a raster layer was sampled for a plot -- recorded per layer so a
     reviewer can audit the choice (point vs zonal vs fractional)."""
 

@@ -17,6 +17,7 @@ autogenerates against.
 from __future__ import annotations
 
 import functools
+from datetime import datetime
 
 from geoalchemy2 import Geometry
 from sqlalchemy import (
@@ -49,11 +50,11 @@ class IngestionRun(Base):
     n_features: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[str] = mapped_column(String(32), default="ingested")
     notes: Mapped[dict] = mapped_column(JSONB, default=dict)
-    created_at: Mapped["DateTime"] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
 
-    plots: Mapped[list["Plot"]] = relationship(back_populates="ingestion_run")
+    plots: Mapped[list[Plot]] = relationship(back_populates="ingestion_run")
 
 
 class Consignment(Base):
@@ -62,11 +63,11 @@ class Consignment(Base):
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
     operator_name: Mapped[str] = mapped_column(String(256))
     commodity: Mapped[str] = mapped_column(String(64), default="coffee")
-    created_at: Mapped["DateTime"] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
 
-    plots: Mapped[list["Plot"]] = relationship(back_populates="consignment")
+    plots: Mapped[list[Plot]] = relationship(back_populates="consignment")
 
 
 class Plot(Base):
@@ -85,13 +86,13 @@ class Plot(Base):
     source_geometry_type: Mapped[str] = mapped_column(String(32))
     asserted_area_ha: Mapped[float | None] = mapped_column(Float, nullable=True)
     geom: Mapped[object] = mapped_column(Geometry(geometry_type="GEOMETRY", srid=4326))
-    created_at: Mapped["DateTime"] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
 
     ingestion_run: Mapped[IngestionRun | None] = relationship(back_populates="plots")
     consignment: Mapped[Consignment | None] = relationship(back_populates="plots")
-    results: Mapped[list["PlotResult"]] = relationship(back_populates="plot")
+    results: Mapped[list[PlotResult]] = relationship(back_populates="plot")
 
 
 class EvidenceLedger(Base):
@@ -109,7 +110,7 @@ class EvidenceLedger(Base):
     pixel_value: Mapped[float | None] = mapped_column(Float, nullable=True)
     covered_fraction: Mapped[float | None] = mapped_column(Float, nullable=True)
     verdict: Mapped[str] = mapped_column(String(64))
-    ts: Mapped["DateTime"] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    ts: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class PlotResult(Base):
@@ -121,7 +122,7 @@ class PlotResult(Base):
     validation_report: Mapped[dict] = mapped_column(JSONB)
     area: Mapped[dict] = mapped_column(JSONB)
     risk: Mapped[dict] = mapped_column(JSONB)
-    created_at: Mapped["DateTime"] = mapped_column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
 
