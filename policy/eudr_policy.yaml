@@ -96,7 +96,7 @@ thresholds:
   repair_area_epsilon_frac: 0.01 # tripwire F: AUTO_FIXED only if area ~unchanged
 
 dds_validity:
-  valid_for_days: 365 # Art. 12: submission + 1 year
+  valid_for_days: 365 # Art. 12 sets a one-year CEILING (valid for up to 1 year from submission); a fixed 365-day window is a defensible reading
   annual_review_required: true
 
 # Datasets. Open licenses first; NonCommercial / attribution-required flagged.
@@ -111,7 +111,7 @@ datasets:
     version: "V3"
     license: "free of charge, attribution required (EC reuse notice)"
     citation: "Bourgoin et al. 2026, ESSD 18:1331-1365"
-    caveat: "empirically over-maps ~18% of trees-for-agricultural-use (shaded coffee) as forest (tripwire L)"
+    caveat: "empirically over-maps ~20% of trees-for-agricultural-use (shaded coffee) as forest (tripwire L)"
   - name: "ESA WorldCover v200"
     role: "land-cover CONTEXT (crop/tree) -- NOT a commodity layer (tripwire E)"
     version: "v200"

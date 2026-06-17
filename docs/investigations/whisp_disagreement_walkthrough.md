@@ -13,9 +13,9 @@ described in `EVIDENCE.md`. The mechanism reasoned about below is the real one.
 (run them with `assess_plot`):
 
 ```
-Hansen GFC-2025-v1.13 lossyear  rule=band21_latency  pixel=21.0  cov=1.000  -> more-info-needed | post_cutoff_loss_fraction=1.000000
-JRC GFC2020 V3                  rule=band21_latency  pixel=1.0   cov=1.000  -> more-info-needed | inside_2020_forest
-ESA WorldCover v200             rule=band21_latency  pixel=0.0   cov=0.000  -> more-info-needed | no_cropland_context
+Hansen GFC-2025-v1.13 lossyear  rule=mins.band21_latency  pixel=21.0  cov=1.000  -> more-info-needed | post_cutoff_loss_fraction=1.000000
+JRC GFC2020 V3                  rule=mins.band21_latency  pixel=1.0   cov=1.000  -> more-info-needed | inside_2020_forest
+ESA WorldCover v200             rule=mins.band21_latency  pixel=0.0   cov=0.000  -> more-info-needed | no_cropland_context
 Hansen layer details: post_cutoff_bands=[21], pre_cutoff_bands=[], band21_only=true,
                       loss_ground_ha=0.7827, loss_fraction=1.000
 ```

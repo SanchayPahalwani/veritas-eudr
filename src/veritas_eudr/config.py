@@ -61,7 +61,9 @@ class Settings(BaseSettings):
     # Local raster fixtures baked into the image (zero live dependency).
     fixtures_dir: Path = Field(default=PROJECT_ROOT / "tests" / "fixtures")
 
-    # AOI: Vietnam Central Highlands (robusta) -- MID-LATITUDE tropics, ~12.67N..13.75N.
+    # AOI: Vietnam Central Highlands robusta belt around Buon Ma Thuot (~12.67N) --
+    # MID-LATITUDE tropics, not the equator. The committed SYNTHETIC fixtures cover a
+    # narrower ~12.64N..12.70N window; the numeric defaults below are the AOI bbox.
     aoi_min_lon: float = 107.5
     aoi_min_lat: float = 12.4
     aoi_max_lon: float = 108.6

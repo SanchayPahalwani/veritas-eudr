@@ -349,7 +349,8 @@ class DueDiligenceStatement(BaseModel):
     reference_number: str | None = None
     verification_number: str | None = None
 
-    # Validity window (Art. 12): submission + 1 year.
+    # Validity window: Art. 12 sets a one-year CEILING (valid for up to 1 year from
+    # submission); we use a fixed 365-day window as a defensible reading of it.
     valid_from: date | None = None
     valid_until: date | None = None
     annual_review_required: bool = True

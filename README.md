@@ -72,8 +72,9 @@ Open licences first; non-commercial and attribution-required sources are flagged
 
 The committed `tests/fixtures` rasters/points are **synthetic** stand-ins for offline,
 deterministic CI; `scripts/fetch_data.sh` names the exact real tiles + the Sample Earth
-DOI and clips them to the AOI. AOI: **Vietnam Central Highlands** robusta coffee
-(~12.67–13.75 N — mid-latitude tropics, not the equator).
+DOI and clips them to the AOI. AOI: the **Vietnam Central Highlands** robusta belt
+around Buon Ma Thuot (~12.67 N — mid-latitude tropics, not the equator); the
+committed **synthetic** fixtures cover a ~12.64–12.70 N window.
 
 ## Regulation (pinned)
 
@@ -99,7 +100,7 @@ cannot tell, from this data alone, whether the clearing happened before or after
 cutoff. Calling it `high` would risk wrongly blocking a farmer over a pre-cutoff event;
 calling it `low` would risk clearing a real one. So the honest answer is *more
 information is needed* — and the evidence trail records exactly which band drove that
-(`band21_latency`, `loss_fraction = 1.0`, `inside_2020_forest`), so a reviewer can see
+(`mins.band21_latency`, `loss_fraction = 1.0`, `inside_2020_forest`), so a reviewer can see
 the reasoning and a trader knows to request a higher-cadence source before deciding.
 This is the plot the map opens by default; `docs/investigations/` works it in full.
 

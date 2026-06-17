@@ -42,6 +42,11 @@ validation **disposition** (`AUTO_VALID` / `AUTO_FIXED` / `NEEDS_REVIEW`), the
 number of evidence-ledger records behind the verdict, and the human-readable
 rationale.
 
+The committed coffee-point fixture is all valid and sampleable, so the demo map
+shows only `low` / `high` / `more-info-needed` plots — no grey "not assessed"
+points and no `NEEDS_REVIEW`. The validation pathologies and not-assessed cases
+are exercised by the `messy_submission` CLI/API demo, not by this map.
+
 ## The band-21 default story (tripwire B)
 
 On load the map performs a **default click-through**: it flies to the first
