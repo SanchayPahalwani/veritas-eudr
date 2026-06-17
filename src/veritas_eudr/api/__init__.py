@@ -30,7 +30,7 @@ from veritas_eudr import __version__
 from veritas_eudr import obs as observability
 from veritas_eudr.db import EvidenceLedger, Plot, PlotResult, get_sessionmaker
 from veritas_eudr.domain import RiskProfile
-from veritas_eudr.risk import build_dds
+from veritas_eudr.risk import build_dds, build_eudr_geojson, validate_eudr_geojson
 
 app = FastAPI(
     title="veritas-eudr",
@@ -145,12 +145,18 @@ def consignment_dds(consignment_id: str, session: SessionDep) -> dict[str, objec
     for plot in plots:
         result = _latest_plot_result(session, plot.id)
         # Skip plots that were not risk-assessed: pipeline stores an empty {} for
-        # risk on unsampleable / NEEDS_REVIEW plots, and they are already excluded
-        # from the DDS GeoJSON. They live in /plots and the evidence trail, not the
-        # DDS. An empty consignment still yields a withheld DDS (build_dds([]) is valid).
+        # risk on unsampleable / NEEDS_REVIEW plots. They live in /plots and the
+        # evidence trail, not the DDS.
         if result is None or not result.risk:
             continue
-        plot_geoms.append((plot.id, to_shape(plot.geom)))
+        geom = to_shape(plot.geom)
+        # Mirror the pipeline (pipeline.py): only EUDR GeoJson v1.5-conformant plots
+        # flow into the DDS. A non-conformant geometry (e.g. a doughnut / interior
+        # ring) is recorded but excluded here -- otherwise build_dds rejects the
+        # whole payload. An all-excluded consignment still yields a withheld DDS.
+        if validate_eudr_geojson(build_eudr_geojson([(plot.id, geom)])):
+            continue
+        plot_geoms.append((plot.id, geom))
         profiles.append(RiskProfile.model_validate(result.risk))
 
     dds = build_dds(consignment_id, operator_name, plot_geoms, profiles)

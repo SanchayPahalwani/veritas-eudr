@@ -335,6 +335,61 @@ def test_consignment_dds_skips_unassessed_plots(db_session):
 
 
 @pytest.mark.postgis
+def test_consignment_dds_excludes_nonconformant_geometry(db_session):
+    """A risk-ASSESSED plot whose geometry is not EUDR v1.5-conformant (an interior
+    ring / doughnut) must be excluded from the DDS, not crash build_dds. Mirrors the
+    pipeline's DDS-eligibility filter."""
+    from veritas_eudr.db import Plot, PlotResult
+
+    _seed_plot_with_result(
+        db_session,
+        plot_id="plot-clean",
+        run_id="run-nc",
+        consignment_id="CONS-NC",
+        tier=RiskTier.LOW,
+    )
+    shell = [(108.01, 12.64), (108.03, 12.64), (108.03, 12.66), (108.01, 12.66), (108.01, 12.64)]
+    hole = [
+        (108.015, 12.645),
+        (108.025, 12.645),
+        (108.025, 12.655),
+        (108.015, 12.655),
+        (108.015, 12.645),
+    ]
+    doughnut = shapely.geometry.Polygon(shell, [hole])
+    db_session.add(
+        Plot(
+            id="plot-doughnut",
+            external_id="plot-doughnut",
+            consignment_id="CONS-NC",
+            geom_hash="hash-plot-doughnut",
+            source_geometry_type="Polygon",
+            geom=from_shape(doughnut, srid=CANONICAL_SRID),
+        )
+    )
+    db_session.add(
+        PlotResult(
+            run_id="run-nc",
+            plot_id="plot-doughnut",
+            validation_report=_validation_report("plot-doughnut"),
+            area=_area_measurement(),
+            risk=_risk_profile("plot-doughnut", "run-nc", RiskTier.LOW).model_dump(mode="json"),
+        )
+    )
+    db_session.flush()
+    try:
+        client = _client_bound_to(db_session)
+        resp = client.get("/consignments/CONS-NC/dds")
+        assert resp.status_code == 200
+        dds = resp.json()
+        assert dds["compliance_complete"] is False
+        # The doughnut is recorded but excluded from the DDS; only the clean plot remains.
+        assert dds["plot_ids"] == ["plot-clean"]
+    finally:
+        app.dependency_overrides.clear()
+
+
+@pytest.mark.postgis
 def test_plot_risk_unassessed_returns_null(db_session):
     """/plots for an unassessed plot returns 200 with null risk/area + assessed=False."""
     _seed_unassessed_plot(db_session, plot_id="plot-unassessed", run_id="run-unassessed")
