@@ -1,0 +1,54 @@
+# `docker compose up` brings up the whole messy-file -> DDS sequence:
+#   db  : PostGIS 18 / 3.6 (pinned by tag AND digest), healthchecked.
+#   app : this project's image. Its entrypoint waits for db, runs migrations
+#         (which assert the GEOS>=3.10 floor), seeds the DEMO consignment from the
+#         committed messy fixture, then serves the API on :8000.
+#
+# Compatibility note: the `version` key + the `depends_on: {condition: ...}` long
+# form are read by legacy docker-compose v1 (compose-file schema 2.x supports the
+# service_healthy condition; schema 3.x dropped it). The modern `docker compose`
+# v2 CLI ignores `version` entirely and supports the condition natively, so this
+# single file works with both `docker compose up` (v2) and `docker-compose up` (v1).
+version: "2.4"
+
+services:
+  db:
+    # Pinned by tag AND digest. The digest is the reproducibility anchor; the tag
+    # is human-readable. This image publishes a linux/amd64 manifest only -- there
+    # is no arm64 variant -- so `platform` is set explicitly and Apple-silicon
+    # hosts run it under emulation.
+    image: postgis/postgis:18-3.6@sha256:0d513af346b21c76bf084e90c0589043c30ff379025d079ce4befa9c3a539f72
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: veritas
+      POSTGRES_PASSWORD: veritas
+      POSTGRES_DB: veritas
+    healthcheck:
+      # pg_isready against the configured role/db; `app` waits on this passing.
+      test: ["CMD-SHELL", "pg_isready -U veritas -d veritas"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    volumes:
+      - veritas_pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Match the db image's architecture so the stack runs consistently under
+    # emulation on arm64 hosts; on GitHub's linux/amd64 runners this is native.
+    platform: linux/amd64
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # The app + alembic read this (config.Settings, migrations/env.py). Points at
+      # the in-network `db` service on its internal port 5432.
+      VERITAS_DATABASE_URL: postgresql+psycopg://veritas:veritas@db:5432/veritas
+    ports:
+      - "8000:8000"
+
+volumes:
+  veritas_pgdata:
