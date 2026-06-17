@@ -45,9 +45,9 @@ def utcnow() -> datetime:
 class Disposition(StrEnum):
     """What the system did with a plot/finding.
 
-    The senior signal of this project is the judgment about what NOT to
-    auto-fix. A coordinate the system cannot safely repair (a lat/lon swap, an
-    unknown CRS) is escalated, never silently "corrected".
+    The judgment this enum encodes is what NOT to auto-fix: a coordinate the
+    system cannot safely repair (a lat/lon swap, an unknown CRS) is escalated,
+    never silently "corrected".
     """
 
     AUTO_VALID = "AUTO_VALID"  # passed as-is, no change
@@ -191,7 +191,8 @@ class AreaMeasurement(BaseModel):
     measured_area_ha: float = Field(..., description="ST_Area(geography)/1e4 -- authoritative.")
     area_ha_ease6933: float = Field(..., description="Equal-area cross-check.")
     area_ha_local_utm: float | None = Field(
-        default=None, description="Per-plot local UTM (32648/32649); shape-faithful, not area authority."
+        default=None,
+        description="Per-plot local UTM (32648/32649); shape-faithful, not area authority.",
     )
     area_ha_webmercator: float | None = Field(
         default=None, description="EPSG:3857 -- WRONG (sec^2(lat) inflation); demonstration only."
@@ -222,7 +223,13 @@ class LayerSample(BaseModel):
         default=None, description="Sum of exactextract coverage fractions (0-1) of matching pixels."
     )
     covered_ha: float | None = Field(
-        default=None, description="covered_fraction converted to GROUND hectares (per-pixel area weighted)."
+        default=None,
+        description="covered_fraction converted to GROUND hectares (per-pixel area weighted).",
+    )
+    details: dict[str, object] = Field(
+        default_factory=dict,
+        description="Structured layer-specific data the convergence step consumes "
+        "(e.g. Hansen post-/pre-cutoff loss bands) -- never parsed back out of `note`.",
     )
     note: str | None = None
 
@@ -320,7 +327,9 @@ class DueDiligenceStatement(BaseModel):
     operator_name: str
     commodity: str = "coffee"
     plot_ids: list[str]
-    geojson: dict[str, object] = Field(..., description="EUDR GeoJson File Description v1.5 FeatureCollection.")
+    geojson: dict[str, object] = Field(
+        ..., description="EUDR GeoJson File Description v1.5 FeatureCollection."
+    )
 
     deforestation_determination: RiskTier
     legality_status: LegalityStatus = LegalityStatus.NOT_ASSESSED
