@@ -1,0 +1,14 @@
+{
+  "_note": "ILLUSTRATIVE PLACEHOLDER -- NOT a real Whisp response. With the synthetic CI rasters this system reads painted data, not real satellite observations, so a comparison against a real Whisp run would not be a meaningful agreement metric and is never presented as one. These point_id -> Risk_PCrop labels are hand-set to the expected tri-state for each painted zone so the confusion-matrix tooling runs reproducibly. To obtain a genuine agreement number: fetch the real rasters/points via scripts/fetch_data.sh, re-run the engine, and refresh the Whisp side with WhispClient (the --refresh path).",
+  "_source": "synthetic placeholder; reproducible-not-fabricated",
+  "_aoi": "Vietnam Central Highlands (robusta coffee), EPSG:4326",
+  "pt-000": "Low",
+  "pt-001": "Low",
+  "pt-007": "High",
+  "pt-008": "High",
+  "pt-014": "More info needed",
+  "pt-015": "More info needed",
+  "pt-021": "More info needed",
+  "pt-028": "Low",
+  "pt-035": "More info needed"
+}
