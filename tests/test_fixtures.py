@@ -146,7 +146,16 @@ def test_regeneration_is_idempotent(tmp_path: Path):
 
 
 def test_manifest_top_level_schema(manifest: dict):
-    for key in ("schema_version", "generator", "seed", "synthetic", "aoi", "facts", "zones", "features"):
+    for key in (
+        "schema_version",
+        "generator",
+        "seed",
+        "synthetic",
+        "aoi",
+        "facts",
+        "zones",
+        "features",
+    ):
         assert key in manifest, f"manifest missing top-level key {key}"
     assert manifest["synthetic"] is True
     aoi = manifest["aoi"]

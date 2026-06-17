@@ -33,7 +33,13 @@ def _square_of_hectares(target_ha: float, lat: float = 12.67, lon0: float = 108.
     dlat = side_m / 110567.0  # ~m per degree latitude at this latitude
     dlon = side_m / (111320.0 * math.cos(math.radians(lat)))
     return Polygon(
-        [(lon0, lat), (lon0 + dlon, lat), (lon0 + dlon, lat + dlat), (lon0, lat + dlat), (lon0, lat)]
+        [
+            (lon0, lat),
+            (lon0 + dlon, lat),
+            (lon0 + dlon, lat + dlat),
+            (lon0, lat + dlat),
+            (lon0, lat),
+        ]
     )
 
 

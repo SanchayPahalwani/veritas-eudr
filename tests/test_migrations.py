@@ -81,9 +81,7 @@ def test_five_tables_exist(migrated_engine):
 
     with migrated_engine.connect() as conn:
         rows = conn.execute(
-            text(
-                "SELECT tablename FROM pg_tables WHERE schemaname = 'public'"
-            )
+            text("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")
         ).fetchall()
     present = {r[0] for r in rows}
     missing = EXPECTED_TABLES - present
@@ -137,12 +135,12 @@ def test_unique_indexes_exist(migrated_engine):
     # ingestion_runs.submission_hash and plots.geom_hash must each be unique.
     ingestion_unique = unique_by_table.get("ingestion_runs", set())
     plots_unique = unique_by_table.get("plots", set())
-    assert any("submission_hash" in n for n in ingestion_unique), (
-        f"no unique index covering submission_hash; have {ingestion_unique}"
-    )
-    assert any("geom_hash" in n for n in plots_unique), (
-        f"no unique index covering geom_hash; have {plots_unique}"
-    )
+    assert any(
+        "submission_hash" in n for n in ingestion_unique
+    ), f"no unique index covering submission_hash; have {ingestion_unique}"
+    assert any(
+        "geom_hash" in n for n in plots_unique
+    ), f"no unique index covering geom_hash; have {plots_unique}"
 
 
 def test_fn_area_hectares_milli_degree_square(migrated_engine):
@@ -159,21 +157,23 @@ def test_fn_area_hectares_milli_degree_square(migrated_engine):
         "108.000000 12.670000))"
     )
     with migrated_engine.connect() as conn:
-        row = conn.execute(
-            text(
-                "SELECT (fn_area_hectares(ST_GeomFromText(:wkt, 4326))).*"
-            ),
-            {"wkt": wkt},
-        ).mappings().one()
+        row = (
+            conn.execute(
+                text("SELECT (fn_area_hectares(ST_GeomFromText(:wkt, 4326))).*"),
+                {"wkt": wkt},
+            )
+            .mappings()
+            .one()
+        )
 
     geography_ha = float(row["geography_ha"])
     epsg6933_ha = float(row["epsg6933_ha"])
 
     # Geodesic vs equal-area cross-check must agree to within 0.1%.
     rel_delta = abs(geography_ha - epsg6933_ha) / geography_ha
-    assert rel_delta < 1e-3, (
-        f"geography_ha={geography_ha} vs epsg6933_ha={epsg6933_ha} differ by {rel_delta:.2%}"
-    )
+    assert (
+        rel_delta < 1e-3
+    ), f"geography_ha={geography_ha} vs epsg6933_ha={epsg6933_ha} differ by {rel_delta:.2%}"
 
     # And the magnitude is ~1.20 ha for a 1-milli-degree square at this latitude
     # (geodesic area cross-checked with pyproj: 12017 m^2 == 1.2017 ha).
@@ -193,10 +193,14 @@ def test_fn_validate_plot_bowtie_is_repaired(migrated_engine):
         "108.000000 12.670000))"
     )
     with migrated_engine.connect() as conn:
-        row = conn.execute(
-            text("SELECT (fn_validate_plot(ST_GeomFromText(:wkt, 4326))).*"),
-            {"wkt": bowtie},
-        ).mappings().one()
+        row = (
+            conn.execute(
+                text("SELECT (fn_validate_plot(ST_GeomFromText(:wkt, 4326))).*"),
+                {"wkt": bowtie},
+            )
+            .mappings()
+            .one()
+        )
 
     assert row["is_valid"] is False, row
     assert row["reason"] is not None
@@ -205,9 +209,7 @@ def test_fn_validate_plot_bowtie_is_repaired(migrated_engine):
     # The repaired geometry must itself be valid.
     with migrated_engine.connect() as conn:
         repaired_valid = conn.execute(
-            text(
-                "SELECT ST_IsValid((fn_validate_plot(ST_GeomFromText(:wkt, 4326))).repaired)"
-            ),
+            text("SELECT ST_IsValid((fn_validate_plot(ST_GeomFromText(:wkt, 4326))).repaired)"),
             {"wkt": bowtie},
         ).scalar_one()
     assert repaired_valid is True
