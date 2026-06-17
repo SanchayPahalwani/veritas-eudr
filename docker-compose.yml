@@ -4,12 +4,12 @@
 #         (which assert the GEOS>=3.10 floor), seeds the DEMO consignment from the
 #         committed messy fixture, then serves the API on :8000.
 #
-# Compatibility note: the `version` key + the `depends_on: {condition: ...}` long
-# form are read by legacy docker-compose v1 (compose-file schema 2.x supports the
-# service_healthy condition; schema 3.x dropped it). The modern `docker compose`
-# v2 CLI ignores `version` entirely and supports the condition natively, so this
-# single file works with both `docker compose up` (v2) and `docker-compose up` (v1).
-version: "2.4"
+# Platform: both services target linux/amd64 (the db image has no arm64 manifest;
+# the exactextract wheel has no linux-aarch64 build -- see DECISIONS.md). On amd64
+# hosts (CI runners, production, Linux x86_64) this is native. On Apple Silicon the
+# build runs under emulation and therefore needs a BuildKit-capable Docker (buildx),
+# which `docker compose` (v2) uses by default. Targets compose-spec v2 (the `version`
+# key is intentionally omitted -- it is obsolete under `docker compose`).
 
 services:
   db:
