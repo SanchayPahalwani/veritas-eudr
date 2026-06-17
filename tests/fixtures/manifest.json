@@ -723,8 +723,8 @@
         "geometry": {
           "type": "Point",
           "coordinates": [
-            108.053511,
-            12.653389
+            108.0524,
+            12.6527
           ]
         },
         "expected_risk_tier": "more-info-needed",
@@ -821,8 +821,8 @@
         "geometry": {
           "type": "Point",
           "coordinates": [
-            108.029813,
-            12.642868
+            108.015,
+            12.672
           ]
         },
         "expected_risk_tier": "low",
@@ -835,8 +835,8 @@
         "geometry": {
           "type": "Point",
           "coordinates": [
-            108.028698,
-            12.648047
+            108.025,
+            12.668
           ]
         },
         "expected_risk_tier": "low",
@@ -915,8 +915,8 @@
         "zone": "Z_D",
         "scenario": "polygon_with_hole",
         "expected_risk_tier": "more-info-needed",
-        "expected_disposition": "AUTO_VALID",
-        "rationale": "Donut polygon (legitimate unplanted patch); topologically valid.",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Interior ring (doughnut): valid generic GeoJSON, but the EUDR GeoJson File Description v1.5 rejects interior rings (tripwire H); not auto-fixable -> NEEDS_REVIEW with the split-into-two-polygons workaround.",
         "geometry": {
           "type": "Polygon",
           "coordinates": [

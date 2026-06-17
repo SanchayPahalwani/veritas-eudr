@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "name": "messy_submission",
-  "_note": "SYNTHETIC messy customer farm list for the `validate` showpiece. Self-intersecting geometry is carried as WKT in properties to keep the file valid JSON; see tests/fixtures/pathology/ and manifest.json.",
+  "_note": "SYNTHETIC messy customer farm list for the `validate` module. Self-intersecting geometry is carried as WKT in properties to keep the file valid JSON; see tests/fixtures/pathology/ and manifest.json.",
   "crs": {
     "type": "name",
     "properties": {
@@ -132,8 +132,8 @@
         "zone": "Z_D",
         "scenario": "polygon_with_hole",
         "expected_risk_tier": "more-info-needed",
-        "expected_disposition": "AUTO_VALID",
-        "rationale": "Donut polygon (legitimate unplanted patch); topologically valid.",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Interior ring (doughnut): valid generic GeoJSON, but the EUDR GeoJson File Description v1.5 rejects interior rings (tripwire H); not auto-fixable -> NEEDS_REVIEW with the split-into-two-polygons workaround.",
         "area_ha": 2.8844,
         "synthetic": true
       }

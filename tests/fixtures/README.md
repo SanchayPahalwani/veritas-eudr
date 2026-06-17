@@ -48,7 +48,7 @@ points.
 ## Messy submission (`submissions/`)
 
 `messy_submission.geojson` (valid JSON) and `messy_submission.csv` -- one messy
-customer farm list for the `validate` showpiece. Itemised in `manifest.json`:
+customer farm list for the `validate` module. Itemised in `manifest.json`:
 clean valid polygon; self-intersecting bowtie (GPS drift, carried as WKT in a
 property because it is not a valid GeoJSON ring); lat/lon-swapped point
 (spreadsheet export); polygon with an interior ring/hole; sliver polygon;

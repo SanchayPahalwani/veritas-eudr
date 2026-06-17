@@ -64,9 +64,9 @@ SEED = 20201231  # the deforestation cutoff date, as a nod; any fixed int works.
 
 # Regulatory facts sourced from the single source of truth.
 _POLICY = load_policy()
-_CUTOFF_DATE_STR: str = str(EUDR_DEFORESTATION_CUTOFF)          # "2020-12-31"
+_CUTOFF_DATE_STR: str = str(EUDR_DEFORESTATION_CUTOFF)  # "2020-12-31"
 _APPLICATION_DATE_STR: str = _POLICY["regulation_application_date"]  # "2026-12-30"
-_HANSEN_RELEASE: str = _POLICY["datasets"][0]["version"]             # "GFC-2025-v1.13"
+_HANSEN_RELEASE: str = _POLICY["datasets"][0]["version"]  # "GFC-2025-v1.13"
 _VN_RISK_STR: str = (
     f"low (Comm. Impl. Reg. (EU) 2025/1093) -> "
     f"{_POLICY['country_risk']['VN']['due_diligence_path']}"
@@ -271,8 +271,8 @@ def build_rasters() -> None:
     # straddling messy plot can be built deterministically against the Hansen
     # grid (the plot is centred on the corner so the loss pixel is one quadrant
     # of it -> summed loss coverage stays below threshold, tripwire C).
-    px_lon, px_lat = (h_t * (c + 0.5, r + 0.5))
-    corner_lon, corner_lat = (h_t * (c, r))
+    px_lon, px_lat = h_t * (c + 0.5, r + 0.5)
+    corner_lon, corner_lat = h_t * (c, r)
     ZONES["Z_F"]["loss_pixel_center"] = [round(px_lon, 8), round(px_lat, 8)]
     ZONES["Z_F"]["loss_pixel_corner"] = [round(corner_lon, 8), round(corner_lat, 8)]
     ZONES["Z_F"]["hansen_deg"] = HANSEN_DEG
@@ -412,6 +412,34 @@ def build_points() -> list[dict]:
         )
         idx += 1
 
+    # ------------------------------------------------------------------ #
+    # Deterministic coordinate overrides.
+    #
+    # pt-041 (Z_F): the PRNG may land on or very near the single Hansen=22
+    # loss pixel at (108.0535, 12.6535), which would cause a buffered-point
+    # sample to read HIGH and contradict the expected more-info-needed label.
+    # Override to a coord inside the Z_F bbox but well off the loss pixel so
+    # the zone-centre (background no-loss) path is exercised.
+    #
+    # pt-048 / pt-049 (AOI_background): the PRNG lands inside the Z_C box
+    # [108.022, 12.642, 108.030, 12.650] (hansen=21/jrc=1/wc=10), which
+    # would make them read more-info-needed, contradicting their low label.
+    # Override to genuine background coords (JRC=0, WC=40, no loss).
+    # ------------------------------------------------------------------ #
+    _COORD_OVERRIDES: dict[str, tuple[float, float]] = {
+        "pt-041": (108.052400, 12.652700),  # inside Z_F, far from loss pixel
+        "pt-048": (108.015000, 12.672000),  # AOI background, well north of all zones
+        "pt-049": (108.025000, 12.668000),  # AOI background, well north of all zones
+    }
+    for entry in features:
+        pid = entry["id"]
+        if pid in _COORD_OVERRIDES:
+            entry["geometry"]["coordinates"] = list(_COORD_OVERRIDES[pid])
+    for mp in manifest_points:
+        pid = mp["id"]
+        if pid in _COORD_OVERRIDES:
+            mp["geometry"]["coordinates"] = list(_COORD_OVERRIDES[pid])
+
     fc = {
         "type": "FeatureCollection",
         "name": "coffee_points",
@@ -433,7 +461,7 @@ def build_points() -> list[dict]:
 
 
 def build_submission() -> list[dict]:
-    """One messy customer farm list exercising the `validate` showpiece.
+    """One messy customer farm list exercising the `validate` module.
 
     The GeoJSON file stays VALID JSON. Geometries that are not expressible as
     valid GeoJSON (the self-intersecting bowtie) are carried as WKT strings in a
@@ -512,7 +540,10 @@ def build_submission() -> list[dict]:
         }
     )
 
-    # 4) polygon with an interior ring/hole (Z_D). Valid; AUTO_VALID.
+    # 4) polygon with an interior ring/hole (Z_D). Valid generic GeoJSON, but
+    #    the EUDR GeoJson File Description v1.5 rejects interior rings (tripwire H).
+    #    A doughnut cannot be safely auto-fixed without splitting into two polygons;
+    #    escalate to NEEDS_REVIEW.
     dcx, dcy = _zone_center("Z_D")
     outer = _square_ring(dcx, dcy, 0.0008)
     hole = _square_ring(dcx, dcy, 0.0002)
@@ -524,8 +555,12 @@ def build_submission() -> list[dict]:
             "scenario": "polygon_with_hole",
             "geometry": {"type": "Polygon", "coordinates": [outer, hole]},
             "expected_risk_tier": ZONES["Z_D"]["expected_risk_tier"],
-            "expected_disposition": "AUTO_VALID",
-            "rationale": "Donut polygon (legitimate unplanted patch); topologically valid.",
+            "expected_disposition": "NEEDS_REVIEW",
+            "rationale": (
+                "Interior ring (doughnut): valid generic GeoJSON, but the EUDR GeoJson "
+                "File Description v1.5 rejects interior rings (tripwire H); not "
+                "auto-fixable -> NEEDS_REVIEW with the split-into-two-polygons workaround."
+            ),
             "area_ha": round(_poly_area_ha(outer) - _poly_area_ha(hole), 4),
         }
     )
@@ -643,11 +678,7 @@ def build_submission() -> list[dict]:
     for it in items:
         if "geometry" not in it:
             continue
-        props = {
-            k: v
-            for k, v in it.items()
-            if k not in {"geometry", "wkt", "_manifest_id"}
-        }
+        props = {k: v for k, v in it.items() if k not in {"geometry", "wkt", "_manifest_id"}}
         props["synthetic"] = True
         features.append(
             {
@@ -678,7 +709,7 @@ def build_submission() -> list[dict]:
         "type": "FeatureCollection",
         "name": "messy_submission",
         "_note": (
-            "SYNTHETIC messy customer farm list for the `validate` showpiece. "
+            "SYNTHETIC messy customer farm list for the `validate` module. "
             "Self-intersecting geometry is carried as WKT in properties to keep the "
             "file valid JSON; see tests/fixtures/pathology/ and manifest.json."
         ),
@@ -787,7 +818,7 @@ def _make_zero_area_spur_entry(cx: float, cy: float) -> dict:
     A = (cx, cy)
     B = (cx + scale, cy)
     C = (cx + scale, cy + scale)
-    M = (cx + scale * 0.5, cy + scale)      # midpoint of top edge
+    M = (cx + scale * 0.5, cy + scale)  # midpoint of top edge
     P = (cx + scale * 0.5, cy + scale * 1.001)  # spike tip (just outside the square)
     D = (cx, cy + scale)
 
@@ -807,15 +838,15 @@ def _make_zero_area_spur_entry(cx: float, cy: float) -> dict:
     # does NOT fragment into multiple parts.
     geom = _wkt_loads(wkt)
     fixed = _shapely_make_valid(geom, method="structure")
-    assert fixed.geom_type == "Polygon", (
-        f"path-zero-area-spur: expected Polygon after repair, got {fixed.geom_type}"
-    )
+    assert (
+        fixed.geom_type == "Polygon"
+    ), f"path-zero-area-spur: expected Polygon after repair, got {fixed.geom_type}"
     orig_area_m2 = abs(_GEOD.geometry_area_perimeter(geom)[0])
     fixed_area_m2 = abs(_GEOD.geometry_area_perimeter(fixed)[0])
     frac_diff = abs(orig_area_m2 - fixed_area_m2) / max(orig_area_m2, 1.0)
-    assert frac_diff < 0.01, (
-        f"path-zero-area-spur: geodesic area changed by {frac_diff:.4%} after repair"
-    )
+    assert (
+        frac_diff < 0.01
+    ), f"path-zero-area-spur: geodesic area changed by {frac_diff:.4%} after repair"
 
     return {
         "id": "path-zero-area-spur",
@@ -1124,12 +1155,24 @@ def verify() -> None:
             # ...and exactly the single loss pixel carries band 22.
             plon, plat = z["loss_pixel_center"]
             got_h_px = _sample_point(hansen, plon, plat)
-            assert got_h_px == z["loss_band"], (
-                f"Z_F loss pixel Hansen sampled {got_h_px}, expected {z['loss_band']}"
-            )
+            assert (
+                got_h_px == z["loss_band"]
+            ), f"Z_F loss pixel Hansen sampled {got_h_px}, expected {z['loss_band']}"
         else:
             got_h = _sample_point(hansen, cx, cy)
             assert got_h == z["hansen"], f"{zid}: Hansen sampled {got_h}, expected {z['hansen']}"
+
+    # Verify the deterministically-overridden points read the expected rasters.
+    # pt-041: inside Z_F bbox, off the loss pixel -> JRC=1, WC=10, Hansen=0 (no loss).
+    pt041_lon, pt041_lat = 108.052400, 12.652700
+    assert _sample_point(jrc, pt041_lon, pt041_lat) == 1, "pt-041 override: JRC should be 1 (Z_F)"
+    assert _sample_point(wc, pt041_lon, pt041_lat) == WC_TREE, "pt-041 override: WC should be 10"
+    assert _sample_point(hansen, pt041_lon, pt041_lat) == 0, "pt-041 override: Hansen should be 0"
+    # pt-048 / pt-049: genuine background -> JRC=0, WC=40 (cropland), Hansen=0.
+    for pid, lon, lat in (("pt-048", 108.015000, 12.672000), ("pt-049", 108.025000, 12.668000)):
+        assert _sample_point(jrc, lon, lat) == 0, f"{pid} override: JRC should be 0 (background)"
+        assert _sample_point(wc, lon, lat) == WC_CROPLAND, f"{pid} override: WC should be 40"
+        assert _sample_point(hansen, lon, lat) == 0, f"{pid} override: Hansen should be 0"
 
     # CRS + range sanity on each raster.
     for path, lo, hi in (
@@ -1142,9 +1185,9 @@ def verify() -> None:
             assert ds.nodata == NODATA_U8, f"{path.name}: nodata != {NODATA_U8}"
             data = ds.read(1)
             valid = data[data != NODATA_U8]
-            assert valid.min() >= lo and valid.max() <= hi, (
-                f"{path.name}: values out of [{lo},{hi}] -> [{valid.min()},{valid.max()}]"
-            )
+            assert (
+                valid.min() >= lo and valid.max() <= hi
+            ), f"{path.name}: values out of [{lo},{hi}] -> [{valid.min()},{valid.max()}]"
             size_mb = path.stat().st_size / 1e6
             assert size_mb < 1.0, f"{path.name}: {size_mb:.3f} MB exceeds 1 MB budget"
 
@@ -1218,7 +1261,7 @@ points.
 ## Messy submission (`submissions/`)
 
 `messy_submission.geojson` (valid JSON) and `messy_submission.csv` -- one messy
-customer farm list for the `validate` showpiece. Itemised in `manifest.json`:
+customer farm list for the `validate` module. Itemised in `manifest.json`:
 clean valid polygon; self-intersecting bowtie (GPS drift, carried as WKT in a
 property because it is not a valid GeoJSON ring); lat/lon-swapped point
 (spreadsheet export); polygon with an interior ring/hole; sliver polygon;
