@@ -1,0 +1,1224 @@
+{
+  "schema_version": "1",
+  "generator": "scripts/make_fixtures.py",
+  "seed": 20201231,
+  "synthetic": true,
+  "_note": "Machine-readable expected-outcome contract for the synthetic AOI fixtures. All data is SYNTHETIC and illustrative; values are hand-painted to exercise specific EUDR correctness tripwires. expected_risk_tier is one of low/high/more-info-needed (null where N/A); expected_disposition is one of AUTO_VALID/AUTO_FIXED/NEEDS_REVIEW (where applicable).",
+  "aoi": {
+    "crs": "EPSG:4326",
+    "min_lon": 108.0,
+    "min_lat": 12.64,
+    "max_lon": 108.06,
+    "max_lat": 12.7,
+    "region": "Vietnam Central Highlands (robusta coffee), ~12.67 N (mid-latitude tropics)"
+  },
+  "facts": {
+    "deforestation_cutoff_date": "2020-12-31",
+    "regulation_application_date": "2026-12-30",
+    "hansen_release": "GFC-2025-v1.13",
+    "hansen_lossyear_encoding": "band 1..25 == calendar 2001..2025; 0 == no loss",
+    "country_risk": {
+      "VN": "low (Comm. Impl. Reg. (EU) 2025/1093) -> simplified_dd"
+    },
+    "zonal_engine": "exactextract"
+  },
+  "rasters": {
+    "hansen_lossyear_aoi.tif": {
+      "dataset": "Hansen GFC-2025-v1.13 lossyear (SYNTHETIC stand-in)",
+      "dtype": "uint8",
+      "nodata": 255,
+      "deg_per_pixel": 0.0002777777777777778,
+      "encoding": "0=no loss; 1..25 == 2001..2025"
+    },
+    "jrc_gfc2020_aoi.tif": {
+      "dataset": "JRC GFC2020 V3 (SYNTHETIC stand-in)",
+      "dtype": "uint8",
+      "nodata": 255,
+      "deg_per_pixel": 8.888888888888889e-05,
+      "encoding": "1=forest at 2020; 0=non-forest"
+    },
+    "worldcover_aoi.tif": {
+      "dataset": "ESA WorldCover v200 (SYNTHETIC stand-in)",
+      "dtype": "uint8",
+      "nodata": 255,
+      "deg_per_pixel": 8.888888888888889e-05,
+      "encoding": "ESA WorldCover classes (10=tree cover, 40=cropland)"
+    }
+  },
+  "zones": {
+    "Z_A": {
+      "scenario": "old_clearing_coffee",
+      "bbox": [
+        108.002,
+        12.642,
+        108.01,
+        12.65
+      ],
+      "jrc": 0,
+      "hansen": 18,
+      "worldcover": 40,
+      "expected_risk_tier": "low",
+      "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+    },
+    "Z_B": {
+      "scenario": "post_cutoff_high",
+      "bbox": [
+        108.012,
+        12.642,
+        108.02,
+        12.65
+      ],
+      "jrc": 1,
+      "hansen": 22,
+      "worldcover": 10,
+      "expected_risk_tier": "high",
+      "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+    },
+    "Z_C": {
+      "scenario": "band21_latency",
+      "bbox": [
+        108.022,
+        12.642,
+        108.03,
+        12.65
+      ],
+      "jrc": 1,
+      "hansen": 21,
+      "worldcover": 10,
+      "expected_risk_tier": "more-info-needed",
+      "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+    },
+    "Z_D": {
+      "scenario": "intact_forest",
+      "bbox": [
+        108.032,
+        12.642,
+        108.04,
+        12.65
+      ],
+      "jrc": 1,
+      "hansen": 0,
+      "worldcover": 10,
+      "expected_risk_tier": "more-info-needed",
+      "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+    },
+    "Z_E": {
+      "scenario": "outside_forest_crop",
+      "bbox": [
+        108.042,
+        12.642,
+        108.05,
+        12.65
+      ],
+      "jrc": 0,
+      "hansen": 0,
+      "worldcover": 40,
+      "expected_risk_tier": "low",
+      "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+    },
+    "Z_F": {
+      "scenario": "subpixel_loss_signal_below_threshold",
+      "bbox": [
+        108.052,
+        12.652,
+        108.054,
+        12.654
+      ],
+      "jrc": 1,
+      "hansen": 0,
+      "worldcover": 10,
+      "expected_risk_tier": "more-info-needed",
+      "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C).",
+      "loss_pixel_center": [
+        108.05347222,
+        12.65347222
+      ],
+      "loss_pixel_corner": [
+        108.05333333,
+        12.65361111
+      ],
+      "loss_band": 22
+    }
+  },
+  "features": {
+    "points": [
+      {
+        "id": "pt-000",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.005309,
+            12.644637
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-001",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.003936,
+            12.648304
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-002",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.006552,
+            12.648281
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-003",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.004555,
+            12.644931
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-004",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.003505,
+            12.646002
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-005",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.007531,
+            12.648434
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-006",
+        "zone": "Z_A",
+        "scenario": "old_clearing_coffee",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.00823,
+            12.647222
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0); only pre-2021 disturbance (Hansen=2018) and cropland context (WorldCover=40)."
+      },
+      {
+        "id": "pt-007",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.01818,
+            12.645554
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-008",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.017296,
+            12.646117
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-009",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.016767,
+            12.648052
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-010",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.013799,
+            12.645885
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-011",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.016936,
+            12.646771
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-012",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.013505,
+            12.646699
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-013",
+        "zone": "Z_B",
+        "scenario": "post_cutoff_high",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.013625,
+            12.644436
+          ]
+        },
+        "expected_risk_tier": "high",
+        "rationale": "Inside 2020 forest (JRC=1), tree-cover context, post-cutoff loss (Hansen=2022) over a meaningful fraction (coverage >= threshold)."
+      },
+      {
+        "id": "pt-014",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.026943,
+            12.648394
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-015",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.024067,
+            12.646334
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-016",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.026251,
+            12.646986
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-017",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.028133,
+            12.648259
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-018",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.026486,
+            12.648562
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-019",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.023421,
+            12.643619
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-020",
+        "zone": "Z_C",
+        "scenario": "band21_latency",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.028187,
+            12.646053
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest with post-cutoff loss in Hansen band 21 (2021), the first post-cutoff annual band -> boundary-uncertain (tripwire B)."
+      },
+      {
+        "id": "pt-021",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.035178,
+            12.647637
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-022",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.035192,
+            12.643399
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-023",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.034218,
+            12.648707
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-024",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.038609,
+            12.64812
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-025",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.036367,
+            12.643776
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-026",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.035002,
+            12.645334
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-027",
+        "zone": "Z_D",
+        "scenario": "intact_forest",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.034222,
+            12.644056
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "Inside 2020 forest (JRC=1), tree context, no recorded loss and no commodity context -> inside forest, no context (more info needed)."
+      },
+      {
+        "id": "pt-028",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.048547,
+            12.647238
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-029",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.047834,
+            12.647918
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-030",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.045733,
+            12.643522
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-031",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.043606,
+            12.644832
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-032",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.04563,
+            12.644494
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-033",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.043828,
+            12.643923
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-034",
+        "zone": "Z_E",
+        "scenario": "outside_forest_crop",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.046417,
+            12.644776
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "Outside the 2020 forest baseline (JRC=0), no loss, cropland context (WorldCover=40) -> low."
+      },
+      {
+        "id": "pt-035",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.052473,
+            12.652669
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-036",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.052904,
+            12.653648
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-037",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.053368,
+            12.652784
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-038",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.05257,
+            12.653602
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-039",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.052708,
+            12.653195
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-040",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.053588,
+            12.652741
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-041",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.053511,
+            12.653389
+          ]
+        },
+        "expected_risk_tier": "more-info-needed",
+        "rationale": "A single post-cutoff Hansen loss pixel (2022); the straddling plot is so small that summed loss coverage is below threshold (tripwire C)."
+      },
+      {
+        "id": "pt-042",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.031266,
+            12.679421
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-043",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.023516,
+            12.677763
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-044",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.003625,
+            12.674317
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-045",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.057817,
+            12.645641
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-046",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.011591,
+            12.672196
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-047",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.032974,
+            12.669173
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-048",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.029813,
+            12.642868
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      },
+      {
+        "id": "pt-049",
+        "zone": "AOI_background",
+        "scenario": "cropland_mosaic",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.028698,
+            12.648047
+          ]
+        },
+        "expected_risk_tier": "low",
+        "rationale": "AOI cropland-mosaic background outside any painted forest zone."
+      }
+    ],
+    "submission": [
+      {
+        "id": "sub-clean-poly",
+        "zone": "Z_A",
+        "scenario": "clean_valid_polygon",
+        "expected_risk_tier": "low",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Valid, simple, sub-4-ha polygon over old-clearing coffee; passes as-is.",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                108.0055,
+                12.6455
+              ],
+              [
+                108.0065,
+                12.6455
+              ],
+              [
+                108.0065,
+                12.6465
+              ],
+              [
+                108.0055,
+                12.6465
+              ],
+              [
+                108.0055,
+                12.6455
+              ]
+            ]
+          ]
+        },
+        "area_ha": 1.2018
+      },
+      {
+        "id": "sub-bowtie",
+        "zone": "Z_B",
+        "scenario": "self_intersecting_bowtie",
+        "expected_risk_tier": "high",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Self-intersecting figure-8 ring: signed area ~0 and ST_MakeValid(method=structure) fragments it into a 2-part MultiPolygon, so area is not meaningfully preserved; per the AUTO_FIXED-only-if-area-unchanged-within-epsilon gate (policy repair_area_epsilon_frac, tripwire F) this escalates to NEEDS_REVIEW rather than being silently auto-fixed.",
+        "wkt": "POLYGON((108.015400 12.645400, 108.016600 12.646600, 108.016600 12.645400, 108.015400 12.646600, 108.015400 12.645400))",
+        "origin": "GPS drift"
+      },
+      {
+        "id": "sub-latlon-swap",
+        "zone": "Z_E",
+        "scenario": "lat_lon_swapped_point",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Spreadsheet export wrote [lat, lon]; swapped coordinates fall outside the AOI (stored lon=12.6 is a valid longitude but lands in sub-Saharan Africa, not Vietnam) -- [lat,lon] order is the classic spreadsheet-export bug and is not safely auto-correctable -> NEEDS_REVIEW.",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            12.646,
+            108.046
+          ]
+        },
+        "origin": "spreadsheet export (lat/lon swap)",
+        "intended_lonlat": [
+          108.046,
+          12.646
+        ]
+      },
+      {
+        "id": "sub-hole-poly",
+        "zone": "Z_D",
+        "scenario": "polygon_with_hole",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Donut polygon (legitimate unplanted patch); topologically valid.",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                108.0352,
+                12.6452
+              ],
+              [
+                108.0368,
+                12.6452
+              ],
+              [
+                108.0368,
+                12.6468
+              ],
+              [
+                108.0352,
+                12.6468
+              ],
+              [
+                108.0352,
+                12.6452
+              ]
+            ],
+            [
+              [
+                108.0358,
+                12.6458
+              ],
+              [
+                108.0358,
+                12.6462
+              ],
+              [
+                108.0362,
+                12.6462
+              ],
+              [
+                108.0362,
+                12.6458
+              ],
+              [
+                108.0358,
+                12.6458
+              ]
+            ]
+          ]
+        },
+        "area_ha": 2.8844
+      },
+      {
+        "id": "sub-sliver",
+        "zone": "Z_C",
+        "scenario": "sliver_polygon",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Near-zero-width digitizing sliver; degenerate area is unreliable for the 4-ha format test and zonal coverage -> human review.",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                108.0252,
+                12.646
+              ],
+              [
+                108.0268,
+                12.646004
+              ],
+              [
+                108.0268,
+                12.645996
+              ],
+              [
+                108.0252,
+                12.646
+              ]
+            ]
+          ]
+        },
+        "area_ha": 0.007692,
+        "origin": "digitizing artefact"
+      },
+      {
+        "id": "sub-dup-id",
+        "zone": "Z_E",
+        "scenario": "duplicate_feature_id",
+        "expected_risk_tier": "low",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Feature id 'sub-clean-poly' reused; identity collision must be flagged, not silently overwritten (idempotency/dedupe trap).",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                108.0456,
+                12.6456
+              ],
+              [
+                108.0464,
+                12.6456
+              ],
+              [
+                108.0464,
+                12.6464
+              ],
+              [
+                108.0456,
+                12.6464
+              ],
+              [
+                108.0456,
+                12.6456
+              ]
+            ]
+          ]
+        },
+        "origin": "duplicate id in customer list"
+      },
+      {
+        "id": "sub-subpixel-zf",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Plot straddles the single post-cutoff loss pixel, which covers only ~6% of the plot -- summed post-cutoff loss coverage stays below the 0.10 threshold, so bare intersection must not flag HIGH (tripwire C).",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                108.05277777,
+                12.65305555
+              ],
+              [
+                108.05388889,
+                12.65305555
+              ],
+              [
+                108.05388889,
+                12.65416667
+              ],
+              [
+                108.05277777,
+                12.65416667
+              ],
+              [
+                108.05277777,
+                12.65305555
+              ]
+            ]
+          ]
+        },
+        "area_ha": 1.483707,
+        "expected_loss_coverage_frac": 0.0625
+      },
+      {
+        "id": "sub-bigpoint",
+        "zone": "AOI_background",
+        "scenario": "over_4ha_point",
+        "expected_risk_tier": "low",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Asserted area 5.2 ha on a single point; EUDR Art. 9(1)(d) requires a perimeter polygon at >= 4 ha -> format violation, needs review.",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.03,
+            12.685
+          ]
+        },
+        "asserted_area_ha": 5.2,
+        "origin": "point submitted for a large plot"
+      },
+      {
+        "id": "sub-smallpoint",
+        "zone": "AOI_background",
+        "scenario": "under_4ha_point",
+        "expected_risk_tier": "low",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Asserted area 1.8 ha on a point; < 4 ha so a single point is a valid EUDR submission format.",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            108.02,
+            12.69
+          ]
+        },
+        "asserted_area_ha": 1.8
+      }
+    ],
+    "pathology": [
+      {
+        "id": "path-bowtie",
+        "zone": "pathology",
+        "scenario": "self_intersection_bowtie",
+        "wkt": "POLYGON((108.029400 12.669400, 108.030600 12.670600, 108.030600 12.669400, 108.029400 12.670600, 108.029400 12.669400))",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "GPS drift on a hand-walked perimeter",
+        "rationale": "Self-intersecting figure-8 ring: signed area ~0 and ST_MakeValid(method=structure) fragments it into a 2-part MultiPolygon, so area is not meaningfully preserved; per the AUTO_FIXED-only-if-area-unchanged-within-epsilon gate (policy repair_area_epsilon_frac, tripwire F) this escalates to NEEDS_REVIEW rather than being silently auto-fixed."
+      },
+      {
+        "id": "path-unclosed-ring",
+        "zone": "pathology",
+        "scenario": "unclosed_ring",
+        "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800))",
+        "expected_risk_tier": null,
+        "expected_disposition": "AUTO_FIXED",
+        "origin": "digitizing -- last vertex not snapped to first",
+        "rationale": "Ring not closed; closing the ring is a safe, area-preserving repair."
+      },
+      {
+        "id": "path-latlon-swap",
+        "zone": "pathology",
+        "scenario": "lat_lon_swap",
+        "wkt": "POINT(12.670000 108.030000)",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "spreadsheet export wrote [lat, lon]",
+        "rationale": "Axis order ambiguous; not safely auto-correctable -> escalate."
+      },
+      {
+        "id": "path-mixed-crs",
+        "zone": "pathology",
+        "scenario": "crs_confusion_web_mercator_meters",
+        "wkt": "POINT(12027500.0 1419000.0)",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "CRS confusion -- coordinates in EPSG:3857 metres, declared 4326",
+        "rationale": "Values are Web Mercator metres, not degrees; CRS must be confirmed."
+      },
+      {
+        "id": "path-duplicate-vertices",
+        "zone": "pathology",
+        "scenario": "consecutive_duplicate_vertices",
+        "wkt": "POLYGON((108.030000 12.670000, 108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800, 108.030000 12.670000))",
+        "expected_risk_tier": null,
+        "expected_disposition": "AUTO_FIXED",
+        "origin": "GPS logger emitted repeated fixes while stationary",
+        "rationale": "Repeated vertices are dropped on cleaning; geometry unchanged."
+      },
+      {
+        "id": "path-spike",
+        "zone": "pathology",
+        "scenario": "spike_antenna_vertex",
+        "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.530000 13.170000, 108.030000 12.670800, 108.030000 12.670000))",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "single bad GPS fix -- a far-flung spike vertex",
+        "rationale": "A spike changes area materially; not a safe auto-repair -> review."
+      },
+      {
+        "id": "path-zero-area",
+        "zone": "pathology",
+        "scenario": "collapsed_zero_area_polygon",
+        "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.031600 12.670000, 108.030000 12.670000))",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "all vertices collinear (bad digitizing)",
+        "rationale": "Degenerate zero-area ring; cannot compute area/coverage -> review."
+      },
+      {
+        "id": "path-tiny-sliver",
+        "zone": "pathology",
+        "scenario": "micro_sliver",
+        "wkt": "POLYGON((108.030000 12.670000, 108.031000 12.670003, 108.031000 12.669997, 108.030000 12.670000))",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "near-collinear digitizing of a field edge",
+        "rationale": "Sub-pixel sliver; area unreliable for the 4-ha format test."
+      },
+      {
+        "id": "path-multipolygon-overlap",
+        "zone": "pathology",
+        "scenario": "self_overlapping_multipolygon",
+        "wkt": "MULTIPOLYGON(((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800, 108.030000 12.670000)), ((108.030400 12.670400, 108.031200 12.670400, 108.031200 12.671200, 108.030400 12.671200, 108.030400 12.670400)))",
+        "expected_risk_tier": null,
+        "expected_disposition": "AUTO_FIXED",
+        "origin": "two digitized parcels merged with overlap",
+        "rationale": "Overlapping parts unioned by ST_MakeValid; area recomputed and recorded."
+      },
+      {
+        "id": "path-antimeridian-decoy",
+        "zone": "pathology",
+        "scenario": "out_of_aoi_coordinate",
+        "wkt": "POINT(-108.030000 12.670000)",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "origin": "wrong-hemisphere keying (negative longitude)",
+        "rationale": "Longitude sign flips the point out of Vietnam; geocode must be confirmed."
+      },
+      {
+        "id": "path-zero-area-spur",
+        "zone": "pathology",
+        "scenario": "zero_area_spur_self_touching_ring",
+        "wkt": "POLYGON((108.0300000 12.6700000, 108.0310000 12.6700000, 108.0310000 12.6710000, 108.0305000 12.6710000, 108.0305000 12.6710010, 108.0305000 12.6710000, 108.0300000 12.6710000, 108.0300000 12.6700000))",
+        "expected_risk_tier": null,
+        "expected_disposition": "AUTO_FIXED",
+        "origin": "GPS digitizing glitch -- stylus briefly touched the ring boundary mid-edge",
+        "rationale": "ST_MakeValid removes a zero-area spur; geodesic area unchanged within epsilon -> AUTO_FIXED (the safe-repair counterexample to the bowtie)."
+      }
+    ]
+  }
+}

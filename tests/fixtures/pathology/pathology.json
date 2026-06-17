@@ -1,0 +1,97 @@
+{
+  "name": "pathology",
+  "_note": "SYNTHETIC geometry pathologies, each from a documented real-world failure mode (origin cited per entry). WKT is used so open-ring / self-crossing cases (not valid GeoJSON) are representable; see manifest.json.",
+  "crs": "EPSG:4326",
+  "entries": [
+    {
+      "id": "path-bowtie",
+      "scenario": "self_intersection_bowtie",
+      "origin": "GPS drift on a hand-walked perimeter",
+      "wkt": "POLYGON((108.029400 12.669400, 108.030600 12.670600, 108.030600 12.669400, 108.029400 12.670600, 108.029400 12.669400))",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Self-intersecting figure-8 ring: signed area ~0 and ST_MakeValid(method=structure) fragments it into a 2-part MultiPolygon, so area is not meaningfully preserved; per the AUTO_FIXED-only-if-area-unchanged-within-epsilon gate (policy repair_area_epsilon_frac, tripwire F) this escalates to NEEDS_REVIEW rather than being silently auto-fixed."
+    },
+    {
+      "id": "path-unclosed-ring",
+      "scenario": "unclosed_ring",
+      "origin": "digitizing -- last vertex not snapped to first",
+      "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800))",
+      "expected_disposition": "AUTO_FIXED",
+      "rationale": "Ring not closed; closing the ring is a safe, area-preserving repair.",
+      "note": "WKT shown with an open ring on purpose (not valid OGC WKT)."
+    },
+    {
+      "id": "path-latlon-swap",
+      "scenario": "lat_lon_swap",
+      "origin": "spreadsheet export wrote [lat, lon]",
+      "wkt": "POINT(12.670000 108.030000)",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Axis order ambiguous; not safely auto-correctable -> escalate.",
+      "intended_wkt": "POINT(108.030000 12.670000)"
+    },
+    {
+      "id": "path-mixed-crs",
+      "scenario": "crs_confusion_web_mercator_meters",
+      "origin": "CRS confusion -- coordinates in EPSG:3857 metres, declared 4326",
+      "wkt": "POINT(12027500.0 1419000.0)",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Values are Web Mercator metres, not degrees; CRS must be confirmed."
+    },
+    {
+      "id": "path-duplicate-vertices",
+      "scenario": "consecutive_duplicate_vertices",
+      "origin": "GPS logger emitted repeated fixes while stationary",
+      "wkt": "POLYGON((108.030000 12.670000, 108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800, 108.030000 12.670000))",
+      "expected_disposition": "AUTO_FIXED",
+      "rationale": "Repeated vertices are dropped on cleaning; geometry unchanged."
+    },
+    {
+      "id": "path-spike",
+      "scenario": "spike_antenna_vertex",
+      "origin": "single bad GPS fix -- a far-flung spike vertex",
+      "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.530000 13.170000, 108.030000 12.670800, 108.030000 12.670000))",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "A spike changes area materially; not a safe auto-repair -> review."
+    },
+    {
+      "id": "path-zero-area",
+      "scenario": "collapsed_zero_area_polygon",
+      "origin": "all vertices collinear (bad digitizing)",
+      "wkt": "POLYGON((108.030000 12.670000, 108.030800 12.670000, 108.031600 12.670000, 108.030000 12.670000))",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Degenerate zero-area ring; cannot compute area/coverage -> review."
+    },
+    {
+      "id": "path-tiny-sliver",
+      "scenario": "micro_sliver",
+      "origin": "near-collinear digitizing of a field edge",
+      "wkt": "POLYGON((108.030000 12.670000, 108.031000 12.670003, 108.031000 12.669997, 108.030000 12.670000))",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Sub-pixel sliver; area unreliable for the 4-ha format test."
+    },
+    {
+      "id": "path-multipolygon-overlap",
+      "scenario": "self_overlapping_multipolygon",
+      "origin": "two digitized parcels merged with overlap",
+      "wkt": "MULTIPOLYGON(((108.030000 12.670000, 108.030800 12.670000, 108.030800 12.670800, 108.030000 12.670800, 108.030000 12.670000)), ((108.030400 12.670400, 108.031200 12.670400, 108.031200 12.671200, 108.030400 12.671200, 108.030400 12.670400)))",
+      "expected_disposition": "AUTO_FIXED",
+      "rationale": "Overlapping parts unioned by ST_MakeValid; area recomputed and recorded."
+    },
+    {
+      "id": "path-antimeridian-decoy",
+      "scenario": "out_of_aoi_coordinate",
+      "origin": "wrong-hemisphere keying (negative longitude)",
+      "wkt": "POINT(-108.030000 12.670000)",
+      "expected_disposition": "NEEDS_REVIEW",
+      "rationale": "Longitude sign flips the point out of Vietnam; geocode must be confirmed."
+    },
+    {
+      "id": "path-zero-area-spur",
+      "scenario": "zero_area_spur_self_touching_ring",
+      "origin": "GPS digitizing glitch -- stylus briefly touched the ring boundary mid-edge",
+      "wkt": "POLYGON((108.0300000 12.6700000, 108.0310000 12.6700000, 108.0310000 12.6710000, 108.0305000 12.6710000, 108.0305000 12.6710010, 108.0305000 12.6710000, 108.0300000 12.6710000, 108.0300000 12.6700000))",
+      "expected_disposition": "AUTO_FIXED",
+      "rationale": "ST_MakeValid removes a zero-area spur; geodesic area unchanged within epsilon -> AUTO_FIXED (the safe-repair counterexample to the bowtie)."
+    }
+  ]
+}

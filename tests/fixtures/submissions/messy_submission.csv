@@ -1,0 +1,10 @@
+﻿id,lon,lat,asserted_area_ha,geom_type,scenario,wkt
+sub-clean-poly,"108,006000","12,646000","1,2018",Polygon,clean_valid_polygon,
+sub-bowtie,,,,Polygon,self_intersecting_bowtie,"POLYGON((108.015400 12.645400, 108.016600 12.646600, 108.016600 12.645400, 108.015400 12.646600, 108.015400 12.645400))"
+sub-latlon-swap,12.646000,108.046000,,Point,lat_lon_swapped_point,
+sub-hole-poly,108.036000,12.646000,2.8844,Polygon,polygon_with_hole,
+sub-sliver,108.026267,12.646000,0.007692,Polygon,sliver_polygon,
+sub-dup-id,108.046000,12.646000,,Polygon,duplicate_feature_id,
+sub-subpixel-zf,108.053333,12.653611,1.483707,Polygon,subpixel_loss_signal_below_threshold,
+sub-bigpoint,108.030000,12.685000,5.2,Point,over_4ha_point,
+sub-smallpoint,108.020000,12.690000,1.8,Point,under_4ha_point,

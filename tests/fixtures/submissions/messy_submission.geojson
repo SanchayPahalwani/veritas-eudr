@@ -1,0 +1,319 @@
+{
+  "type": "FeatureCollection",
+  "name": "messy_submission",
+  "_note": "SYNTHETIC messy customer farm list for the `validate` showpiece. Self-intersecting geometry is carried as WKT in properties to keep the file valid JSON; see tests/fixtures/pathology/ and manifest.json.",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "sub-clean-poly",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              108.0055,
+              12.6455
+            ],
+            [
+              108.0065,
+              12.6455
+            ],
+            [
+              108.0065,
+              12.6465
+            ],
+            [
+              108.0055,
+              12.6465
+            ],
+            [
+              108.0055,
+              12.6455
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "sub-clean-poly",
+        "zone": "Z_A",
+        "scenario": "clean_valid_polygon",
+        "expected_risk_tier": "low",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Valid, simple, sub-4-ha polygon over old-clearing coffee; passes as-is.",
+        "area_ha": 1.2018,
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-latlon-swap",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.646,
+          108.046
+        ]
+      },
+      "properties": {
+        "id": "sub-latlon-swap",
+        "zone": "Z_E",
+        "scenario": "lat_lon_swapped_point",
+        "expected_risk_tier": null,
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Spreadsheet export wrote [lat, lon]; swapped coordinates fall outside the AOI (stored lon=12.6 is a valid longitude but lands in sub-Saharan Africa, not Vietnam) -- [lat,lon] order is the classic spreadsheet-export bug and is not safely auto-correctable -> NEEDS_REVIEW.",
+        "origin": "spreadsheet export (lat/lon swap)",
+        "intended_lonlat": [
+          108.046,
+          12.646
+        ],
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-hole-poly",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              108.0352,
+              12.6452
+            ],
+            [
+              108.0368,
+              12.6452
+            ],
+            [
+              108.0368,
+              12.6468
+            ],
+            [
+              108.0352,
+              12.6468
+            ],
+            [
+              108.0352,
+              12.6452
+            ]
+          ],
+          [
+            [
+              108.0358,
+              12.6458
+            ],
+            [
+              108.0358,
+              12.6462
+            ],
+            [
+              108.0362,
+              12.6462
+            ],
+            [
+              108.0362,
+              12.6458
+            ],
+            [
+              108.0358,
+              12.6458
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "sub-hole-poly",
+        "zone": "Z_D",
+        "scenario": "polygon_with_hole",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Donut polygon (legitimate unplanted patch); topologically valid.",
+        "area_ha": 2.8844,
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-sliver",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              108.0252,
+              12.646
+            ],
+            [
+              108.0268,
+              12.646004
+            ],
+            [
+              108.0268,
+              12.645996
+            ],
+            [
+              108.0252,
+              12.646
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "sub-sliver",
+        "zone": "Z_C",
+        "scenario": "sliver_polygon",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Near-zero-width digitizing sliver; degenerate area is unreliable for the 4-ha format test and zonal coverage -> human review.",
+        "origin": "digitizing artefact",
+        "area_ha": 0.007692,
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-clean-poly",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              108.0456,
+              12.6456
+            ],
+            [
+              108.0464,
+              12.6456
+            ],
+            [
+              108.0464,
+              12.6464
+            ],
+            [
+              108.0456,
+              12.6464
+            ],
+            [
+              108.0456,
+              12.6456
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "sub-clean-poly",
+        "zone": "Z_E",
+        "scenario": "duplicate_feature_id",
+        "expected_risk_tier": "low",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Feature id 'sub-clean-poly' reused; identity collision must be flagged, not silently overwritten (idempotency/dedupe trap).",
+        "origin": "duplicate id in customer list",
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-subpixel-zf",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              108.05277777,
+              12.65305555
+            ],
+            [
+              108.05388889,
+              12.65305555
+            ],
+            [
+              108.05388889,
+              12.65416667
+            ],
+            [
+              108.05277777,
+              12.65416667
+            ],
+            [
+              108.05277777,
+              12.65305555
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "sub-subpixel-zf",
+        "zone": "Z_F",
+        "scenario": "subpixel_loss_signal_below_threshold",
+        "expected_risk_tier": "more-info-needed",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Plot straddles the single post-cutoff loss pixel, which covers only ~6% of the plot -- summed post-cutoff loss coverage stays below the 0.10 threshold, so bare intersection must not flag HIGH (tripwire C).",
+        "area_ha": 1.483707,
+        "expected_loss_coverage_frac": 0.0625,
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-bigpoint",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.03,
+          12.685
+        ]
+      },
+      "properties": {
+        "id": "sub-bigpoint",
+        "zone": "AOI_background",
+        "scenario": "over_4ha_point",
+        "expected_risk_tier": "low",
+        "expected_disposition": "NEEDS_REVIEW",
+        "rationale": "Asserted area 5.2 ha on a single point; EUDR Art. 9(1)(d) requires a perimeter polygon at >= 4 ha -> format violation, needs review.",
+        "asserted_area_ha": 5.2,
+        "origin": "point submitted for a large plot",
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-smallpoint",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.02,
+          12.69
+        ]
+      },
+      "properties": {
+        "id": "sub-smallpoint",
+        "zone": "AOI_background",
+        "scenario": "under_4ha_point",
+        "expected_risk_tier": "low",
+        "expected_disposition": "AUTO_VALID",
+        "rationale": "Asserted area 1.8 ha on a point; < 4 ha so a single point is a valid EUDR submission format.",
+        "asserted_area_ha": 1.8,
+        "synthetic": true
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sub-bowtie",
+      "geometry": null,
+      "properties": {
+        "id": "sub-bowtie",
+        "zone": "Z_B",
+        "scenario": "self_intersecting_bowtie",
+        "wkt": "POLYGON((108.015400 12.645400, 108.016600 12.646600, 108.016600 12.645400, 108.015400 12.646600, 108.015400 12.645400))",
+        "note": "self-intersecting; geometry carried as WKT (invalid GeoJSON ring)",
+        "synthetic": true
+      }
+    }
+  ]
+}
