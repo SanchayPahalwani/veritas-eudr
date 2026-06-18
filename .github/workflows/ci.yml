@@ -54,7 +54,11 @@ jobs:
         # wheels (no system GDAL/PROJ needed -- see Dockerfile header).
         run: |
           python -m pip install --upgrade pip
-          pip install .[dev]
+          # Editable, mirroring the Dockerfile: a non-editable `pip install .` imports
+          # veritas_eudr from site-packages, so config.PROJECT_ROOT (Path(__file__).parents[2])
+          # resolves into site-packages' parent instead of the repo -- and the suite, which
+          # reads tests/fixtures and policy/ via PROJECT_ROOT, can't find them.
+          pip install -e .[dev]
 
       - name: Verify resolved geospatial stack
         # Mirror the Dockerfile's build-time check so the CI log records exactly
