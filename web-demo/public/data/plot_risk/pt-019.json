@@ -1,0 +1,110 @@
+{
+  "area": {
+    "area_authority": "ST_Area(geom::geography)",
+    "area_ha_ease6933": 0.0,
+    "area_ha_local_utm": null,
+    "area_ha_webmercator": null,
+    "borderline": false,
+    "delta_6933_pct": 0.0,
+    "delta_webmercator_pct": null,
+    "measured_area_ha": 0.0,
+    "required_geometry_format": "point"
+  },
+  "assessed": true,
+  "plot_id": "pt-019",
+  "risk": {
+    "axes": [
+      {
+        "covered_fraction": 1.0000000079402651,
+        "covered_ha": 0.782737155393412,
+        "dataset_name": "Hansen GFC-2025-v1.13 lossyear",
+        "dataset_version": "GFC-2025-v1.13",
+        "details": {
+          "band21_only": true,
+          "loss_fraction": 1.0000000079402651,
+          "loss_ground_ha": 0.782737155393412,
+          "post_cutoff_bands": [
+            21
+          ],
+          "pre_cutoff_bands": []
+        },
+        "layer": "lossyear",
+        "note": "post_cutoff_bands=[21]; pre_cutoff_bands=None; post_loss_ground_ha=0.782737; loss_fraction=1.000000; band21_only=True",
+        "strategy": "fractional_overlap",
+        "value": 21.0
+      },
+      {
+        "covered_fraction": 1.0,
+        "covered_ha": null,
+        "dataset_name": "JRC GFC2020 V3",
+        "dataset_version": "V3",
+        "details": {},
+        "layer": "forest_2020",
+        "note": "forest_fraction=1.0000; inside_2020_forest=True",
+        "strategy": "zonal_majority",
+        "value": 1.0
+      },
+      {
+        "covered_fraction": 0.0,
+        "covered_ha": null,
+        "dataset_name": "ESA WorldCover v200",
+        "dataset_version": "v200",
+        "details": {},
+        "layer": "landcover_context",
+        "note": "cropland_fraction=0.0000; cropland_context=False (land-cover CONTEXT only, not commodity identification)",
+        "strategy": "zonal_majority",
+        "value": 0.0
+      }
+    ],
+    "boundary_uncertain": true,
+    "cutoff_date": "2020-12-31",
+    "evidence": [
+      {
+        "covered_fraction": 1.0000000079402651,
+        "dataset_name": "Hansen GFC-2025-v1.13 lossyear",
+        "dataset_version": "GFC-2025-v1.13",
+        "pixel_value": 21.0,
+        "plot_id": "pt-019",
+        "rule_id": "mins.band21_latency",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "more-info-needed|post_cutoff_loss_fraction=1.000000"
+      },
+      {
+        "covered_fraction": 1.0,
+        "dataset_name": "JRC GFC2020 V3",
+        "dataset_version": "V3",
+        "pixel_value": 1.0,
+        "plot_id": "pt-019",
+        "rule_id": "mins.band21_latency",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "more-info-needed|inside_2020_forest"
+      },
+      {
+        "covered_fraction": 0.0,
+        "dataset_name": "ESA WorldCover v200",
+        "dataset_version": "v200",
+        "pixel_value": 0.0,
+        "plot_id": "pt-019",
+        "rule_id": "mins.band21_latency",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "more-info-needed|no_cropland_context"
+      }
+    ],
+    "plot_id": "pt-019",
+    "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+    "risk": "more-info-needed",
+    "whisp_risk_pcrop": "More info needed"
+  },
+  "validation": {
+    "disposition": "AUTO_VALID",
+    "findings": [],
+    "needs_review": false,
+    "notes": [],
+    "plot_id": "pt-019",
+    "repaired_geometry_wkt": null,
+    "source_geometry_type": "Point"
+  }
+}

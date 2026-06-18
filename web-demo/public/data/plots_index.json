@@ -1,0 +1,23 @@
+{
+  "aoi_center": [
+    108.03,
+    12.66
+  ],
+  "band21_plot_ids": [
+    "pt-014",
+    "pt-015",
+    "pt-016",
+    "pt-017",
+    "pt-018",
+    "pt-019",
+    "pt-020"
+  ],
+  "counts": {
+    "high": 7,
+    "low": 22,
+    "more-info-needed": 21
+  },
+  "hero_plot_id": "pt-014",
+  "n_plots": 50,
+  "run_id": "09937884b63dade7"
+}

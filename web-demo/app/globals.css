@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────────
+   VERITAS · EUDR — "declassified forensic / tactical telemetry" design tokens.
+   Dark CRT substrate, white-phosphor foreground, single hazard-red accent.
+   Risk tiers are DATA encoding (small emissive markers), never UI chrome.
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Substrate — deactivated CRT, layered. Never pure #000. */
+  --color-bg: #08090c;
+  --color-surface: #0d0f13;
+  --color-surface-2: #12151b;
+  --color-surface-3: #171b22;
+  --color-line: #1d222a;
+  --color-line-bright: #2a313b;
+
+  /* Phosphor foreground. */
+  --color-fg: #e9eef3;
+  --color-fg-dim: #8a95a1;
+  --color-fg-faint: #525a64;
+
+  /* Risk tiers (canonical, brightened for dark-bg legibility). */
+  --color-risk-low: #3fb950;
+  --color-risk-high: #ff3b30;
+  --color-risk-more: #f5a623;
+  --color-risk-unassessed: #6b7280;
+  --color-band21: #3b82f6;
+
+  /* The single accent — aviation/hazard red (== high-risk). */
+  --color-hazard: #ff3b30;
+  /* Terminal phosphor, single-use status only. */
+  --color-phosphor: #4af626;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jbmono), ui-monospace, "SF Mono", monospace;
+
+  --color-grid-line: rgba(126, 162, 201, 0.045);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+html {
+  background: var(--color-bg);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01", "tnum";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* `clip` (not `hidden`) prevents horizontal overflow WITHOUT turning <body>
+     into a scroll container — keeps vertical scroll on the viewport so
+     window.scrollY and scroll-linked motion work. */
+  overflow-x: clip;
+}
+
+/* Engineering-paper blueprint grid + corner vignette, fixed behind everything. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--color-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 120% 90% at 50% 0%, #000 35%, transparent 95%);
+}
+
+::selection {
+  background: var(--color-hazard);
+  color: #fff;
+}
+
+/* Tactical scrollbar. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line-bright);
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fg-faint);
+}
+
+/* Keyboard focus — square hazard outline, never rounded. */
+:focus-visible {
+  outline: 2px solid var(--color-hazard);
+  outline-offset: 2px;
+}
+
+/* ── Typographic utilities ──────────────────────────────────────────────────
+   Macro display: heavy Inter, massive clamp, tight negative tracking, uppercase.
+   Micro telemetry: mono, small, generous tracking, uppercase. */
+.display {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum";
+}
+.tele {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+}
+.hairline {
+  border-color: var(--color-line);
+}
+
+/* ── Effect layers ──────────────────────────────────────────────────────────── */
+
+/* CRT scanlines — applied only to "terminal" surfaces (the console). */
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.16) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/* Mechanical grain — global low-opacity static. */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Forensic stamp — rotated, outlined, hazard-red. */
+.stamp {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-hazard);
+  border: 2px solid var(--color-hazard);
+  padding: 0.35em 0.7em;
+  display: inline-block;
+  position: relative;
+}
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid color-mix(in srgb, var(--color-hazard) 50%, transparent);
+}
+
+/* Hairline grid: 1px gaps via contrasting bg (the gap:1px trick). */
+.grid-rule {
+  background: var(--color-line);
+  gap: 1px;
+}
+
+/* A faint pulsing "live" dot. */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.live-dot {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+/* Animated dash for connectors. */
+@keyframes dash-flow {
+  to { stroke-dashoffset: -16; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .live-dot { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

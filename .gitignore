@@ -21,6 +21,9 @@ coverage.xml
 # OS
 .DS_Store
 
+# Local Claude Code harness config
+.claude/
+
 # Large/derived data: committed fixtures live under tests/fixtures/ and
 # web/basemap/ explicitly; raw downloaded granules do NOT enter git.
 data/raw/

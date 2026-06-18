@@ -1,0 +1,13 @@
+{
+  "aoi_lat": 12.67,
+  "area_authority": "ST_Area(geom::geography)",
+  "area_ha_ease6933": 4.3382485547224015,
+  "area_ha_local_utm": 4.345843359669885,
+  "area_ha_webmercator": 4.585083718798322,
+  "borderline": false,
+  "delta_6933_pct": -8.42832618890939e-09,
+  "delta_webmercator_pct": 5.6897423136528795,
+  "measured_area_ha": 4.338248555088043,
+  "required_geometry_format": "polygon",
+  "sec2_lat_factor": 1.0505393594304795
+}

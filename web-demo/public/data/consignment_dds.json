@@ -1,0 +1,828 @@
+{
+  "annual_review_required": true,
+  "commodity": "coffee",
+  "compliance_complete": false,
+  "consignment_id": "VN-DLK-2026-Q2",
+  "country_risk_class": "low",
+  "deforestation_cutoff_date": "2020-12-31",
+  "deforestation_determination": "high",
+  "due_diligence_path": "simplified_dd",
+  "due_diligence_regime": "Art. 13 simplified due diligence (low-risk country): Art. 10 risk assessment and Art. 11 mitigation skipped, but Art. 9 geolocation, DDS submission and 5-year retention still apply -- low-risk is not no-diligence.",
+  "generated_at": "2026-06-18T00:00:00+00:00",
+  "geojson": {
+    "features": [
+      {
+        "geometry": {
+          "coordinates": [
+            108.005309,
+            12.644637
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-000"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.003936,
+            12.648304
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-001"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.006552,
+            12.648281
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-002"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.004555,
+            12.644931
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-003"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.003505,
+            12.646002
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-004"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.007531,
+            12.648434
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-005"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.00823,
+            12.647222
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-006"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.01818,
+            12.645554
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-007"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.017296,
+            12.646117
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-008"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.016767,
+            12.648052
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-009"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.013799,
+            12.645885
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-010"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.016936,
+            12.646771
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-011"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.013505,
+            12.646699
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-012"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.013625,
+            12.644436
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-013"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.026943,
+            12.648394
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-014"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.024067,
+            12.646334
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-015"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.026251,
+            12.646986
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-016"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.028133,
+            12.648259
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-017"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.026486,
+            12.648562
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-018"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.023421,
+            12.643619
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-019"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.028187,
+            12.646053
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-020"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.035178,
+            12.647637
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-021"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.035192,
+            12.643399
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-022"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.034218,
+            12.648707
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-023"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.038609,
+            12.64812
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-024"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.036367,
+            12.643776
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-025"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.035002,
+            12.645334
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-026"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.034222,
+            12.644056
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-027"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.048547,
+            12.647238
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-028"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.047834,
+            12.647918
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-029"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.045733,
+            12.643522
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-030"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.043606,
+            12.644832
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-031"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.04563,
+            12.644494
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-032"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.043828,
+            12.643923
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-033"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.046417,
+            12.644776
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-034"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.052473,
+            12.652669
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-035"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.052904,
+            12.653648
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-036"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.053368,
+            12.652784
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-037"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.05257,
+            12.653602
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-038"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.052708,
+            12.653195
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-039"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.053588,
+            12.652741
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-040"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.0524,
+            12.6527
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-041"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.031266,
+            12.679421
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-042"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.023516,
+            12.677763
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-043"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.003625,
+            12.674317
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-044"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.057817,
+            12.645641
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-045"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.011591,
+            12.672196
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-046"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.032974,
+            12.669173
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-047"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.015,
+            12.672
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-048"
+        },
+        "type": "Feature"
+      },
+      {
+        "geometry": {
+          "coordinates": [
+            108.025,
+            12.668
+          ],
+          "type": "Point"
+        },
+        "properties": {
+          "Area": null,
+          "ProducerName": "",
+          "ProductionPlace": "pt-049"
+        },
+        "type": "Feature"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  "geojson_spec_version": "1.5",
+  "legality_status": "NOT_ASSESSED",
+  "operator_name": "Đắk Lắk Highlands Robusta Cooperative",
+  "plot_ids": [
+    "pt-000",
+    "pt-001",
+    "pt-002",
+    "pt-003",
+    "pt-004",
+    "pt-005",
+    "pt-006",
+    "pt-007",
+    "pt-008",
+    "pt-009",
+    "pt-010",
+    "pt-011",
+    "pt-012",
+    "pt-013",
+    "pt-014",
+    "pt-015",
+    "pt-016",
+    "pt-017",
+    "pt-018",
+    "pt-019",
+    "pt-020",
+    "pt-021",
+    "pt-022",
+    "pt-023",
+    "pt-024",
+    "pt-025",
+    "pt-026",
+    "pt-027",
+    "pt-028",
+    "pt-029",
+    "pt-030",
+    "pt-031",
+    "pt-032",
+    "pt-033",
+    "pt-034",
+    "pt-035",
+    "pt-036",
+    "pt-037",
+    "pt-038",
+    "pt-039",
+    "pt-040",
+    "pt-041",
+    "pt-042",
+    "pt-043",
+    "pt-044",
+    "pt-045",
+    "pt-046",
+    "pt-047",
+    "pt-048",
+    "pt-049"
+  ],
+  "policy_version": "2026-06-17",
+  "reference_number": "EUDR-2026-VN-DLK-2026-Q2-09937884",
+  "regulation_application_date": "2026-12-30",
+  "valid_from": "2026-06-18",
+  "valid_until": "2027-06-18",
+  "verification_number": "AE3B5C3E16492CD7301613839BEEDFCB"
+}

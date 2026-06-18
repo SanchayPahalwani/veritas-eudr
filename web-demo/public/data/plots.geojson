@@ -1,0 +1,958 @@
+{
+  "_note": "Deterministic export of process_features over the synthetic AOI submission; properties drive the read-only web map. Regenerate with scripts/export_web_plots.py.",
+  "_run_id": "09937884b63dade7",
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          108.005309,
+          12.644637
+        ],
+        "type": "Point"
+      },
+      "id": "pt-000",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-000",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.003936,
+          12.648304
+        ],
+        "type": "Point"
+      },
+      "id": "pt-001",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-001",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.006552,
+          12.648281
+        ],
+        "type": "Point"
+      },
+      "id": "pt-002",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-002",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.004555,
+          12.644931
+        ],
+        "type": "Point"
+      },
+      "id": "pt-003",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-003",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.003505,
+          12.646002
+        ],
+        "type": "Point"
+      },
+      "id": "pt-004",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-004",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.007531,
+          12.648434
+        ],
+        "type": "Point"
+      },
+      "id": "pt-005",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-005",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.00823,
+          12.647222
+        ],
+        "type": "Point"
+      },
+      "id": "pt-006",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-006",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.01818,
+          12.645554
+        ],
+        "type": "Point"
+      },
+      "id": "pt-007",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-007",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.017296,
+          12.646117
+        ],
+        "type": "Point"
+      },
+      "id": "pt-008",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-008",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.016767,
+          12.648052
+        ],
+        "type": "Point"
+      },
+      "id": "pt-009",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-009",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.013799,
+          12.645885
+        ],
+        "type": "Point"
+      },
+      "id": "pt-010",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-010",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.016936,
+          12.646771
+        ],
+        "type": "Point"
+      },
+      "id": "pt-011",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-011",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.013505,
+          12.646699
+        ],
+        "type": "Point"
+      },
+      "id": "pt-012",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-012",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.013625,
+          12.644436
+        ],
+        "type": "Point"
+      },
+      "id": "pt-013",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-013",
+        "rationale": "Inside the 2020 forest baseline with corroborating post-cutoff loss over 100.00% of the plot (>= 10% ground coverage); no commodity context and no pre-2020 disturbance.",
+        "risk": "high"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.026943,
+          12.648394
+        ],
+        "type": "Point"
+      },
+      "id": "pt-014",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-014",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.024067,
+          12.646334
+        ],
+        "type": "Point"
+      },
+      "id": "pt-015",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-015",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.026251,
+          12.646986
+        ],
+        "type": "Point"
+      },
+      "id": "pt-016",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-016",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.028133,
+          12.648259
+        ],
+        "type": "Point"
+      },
+      "id": "pt-017",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-017",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.026486,
+          12.648562
+        ],
+        "type": "Point"
+      },
+      "id": "pt-018",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-018",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.023421,
+          12.643619
+        ],
+        "type": "Point"
+      },
+      "id": "pt-019",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-019",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.028187,
+          12.646053
+        ],
+        "type": "Point"
+      },
+      "id": "pt-020",
+      "properties": {
+        "boundary_uncertain": true,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-020",
+        "rationale": "Post-cutoff loss is only in Hansen band 21 (calendar 2021), the first post-cutoff annual band. Hansen reports year-of-first-detection with latency, so a 2019-2020 clearing can surface in 2021: boundary-uncertain.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.035178,
+          12.647637
+        ],
+        "type": "Point"
+      },
+      "id": "pt-021",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-021",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.035192,
+          12.643399
+        ],
+        "type": "Point"
+      },
+      "id": "pt-022",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-022",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.034218,
+          12.648707
+        ],
+        "type": "Point"
+      },
+      "id": "pt-023",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-023",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.038609,
+          12.64812
+        ],
+        "type": "Point"
+      },
+      "id": "pt-024",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-024",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.036367,
+          12.643776
+        ],
+        "type": "Point"
+      },
+      "id": "pt-025",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-025",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.035002,
+          12.645334
+        ],
+        "type": "Point"
+      },
+      "id": "pt-026",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-026",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.034222,
+          12.644056
+        ],
+        "type": "Point"
+      },
+      "id": "pt-027",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-027",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.048547,
+          12.647238
+        ],
+        "type": "Point"
+      },
+      "id": "pt-028",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-028",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.047834,
+          12.647918
+        ],
+        "type": "Point"
+      },
+      "id": "pt-029",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-029",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.045733,
+          12.643522
+        ],
+        "type": "Point"
+      },
+      "id": "pt-030",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-030",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.043606,
+          12.644832
+        ],
+        "type": "Point"
+      },
+      "id": "pt-031",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-031",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.04563,
+          12.644494
+        ],
+        "type": "Point"
+      },
+      "id": "pt-032",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-032",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.043828,
+          12.643923
+        ],
+        "type": "Point"
+      },
+      "id": "pt-033",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-033",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.046417,
+          12.644776
+        ],
+        "type": "Point"
+      },
+      "id": "pt-034",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-034",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.052473,
+          12.652669
+        ],
+        "type": "Point"
+      },
+      "id": "pt-035",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-035",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.052904,
+          12.653648
+        ],
+        "type": "Point"
+      },
+      "id": "pt-036",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-036",
+        "rationale": "Post-cutoff loss present but ground coverage 0.33% is below the 10% threshold (single-edge-pixel signal); not sufficient to flag HIGH on a bare intersection.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.053368,
+          12.652784
+        ],
+        "type": "Point"
+      },
+      "id": "pt-037",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-037",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.05257,
+          12.653602
+        ],
+        "type": "Point"
+      },
+      "id": "pt-038",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-038",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.052708,
+          12.653195
+        ],
+        "type": "Point"
+      },
+      "id": "pt-039",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-039",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.053588,
+          12.652741
+        ],
+        "type": "Point"
+      },
+      "id": "pt-040",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-040",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.0524,
+          12.6527
+        ],
+        "type": "Point"
+      },
+      "id": "pt-041",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-041",
+        "rationale": "Inside the 2020 forest baseline with no commodity/crop context and no recorded loss; intact forest of undetermined land use.",
+        "risk": "more-info-needed"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.031266,
+          12.679421
+        ],
+        "type": "Point"
+      },
+      "id": "pt-042",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-042",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.023516,
+          12.677763
+        ],
+        "type": "Point"
+      },
+      "id": "pt-043",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-043",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.003625,
+          12.674317
+        ],
+        "type": "Point"
+      },
+      "id": "pt-044",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-044",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.057817,
+          12.645641
+        ],
+        "type": "Point"
+      },
+      "id": "pt-045",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-045",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.011591,
+          12.672196
+        ],
+        "type": "Point"
+      },
+      "id": "pt-046",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-046",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.032974,
+          12.669173
+        ],
+        "type": "Point"
+      },
+      "id": "pt-047",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-047",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.015,
+          12.672
+        ],
+        "type": "Point"
+      },
+      "id": "pt-048",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-048",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          108.025,
+          12.668
+        ],
+        "type": "Point"
+      },
+      "id": "pt-049",
+      "properties": {
+        "boundary_uncertain": false,
+        "disposition": "AUTO_VALID",
+        "n_evidence": 3,
+        "plot_id": "pt-049",
+        "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+        "risk": "low"
+      },
+      "type": "Feature"
+    }
+  ],
+  "name": "veritas_eudr_web_plots",
+  "type": "FeatureCollection"
+}

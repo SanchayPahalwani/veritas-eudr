@@ -1,0 +1,125 @@
+{
+  "cases": [
+    {
+      "blurb": "Simple, closed, in-AOI polygon. Passes untouched.",
+      "disposition": "AUTO_VALID",
+      "findings": [],
+      "needs_review": false,
+      "plot_id": "sub-clean-poly",
+      "scenario": "clean_valid_polygon",
+      "source_geometry_type": "Polygon",
+      "title": "Clean sub-4 ha polygon"
+    },
+    {
+      "blurb": "First vertex != last. Closing the ring is area-preserving — safe to auto-fix.",
+      "disposition": "AUTO_FIXED",
+      "findings": [
+        {
+          "disposition": "AUTO_FIXED",
+          "failing_coordinate": null,
+          "human_reason": "Exterior ring was not closed (first vertex != last); closing the ring is a safe, area-preserving repair.",
+          "rule_id": "unclosed_ring",
+          "severity": "WARNING"
+        }
+      ],
+      "needs_review": false,
+      "plot_id": "sub-unclosed-ring",
+      "scenario": "unclosed_ring",
+      "source_geometry_type": "Polygon",
+      "title": "Unclosed ring"
+    },
+    {
+      "blurb": "A stationary GPS logger repeated a vertex. Dropping it leaves the geometry unchanged.",
+      "disposition": "AUTO_FIXED",
+      "findings": [
+        {
+          "disposition": "AUTO_FIXED",
+          "failing_coordinate": null,
+          "human_reason": "Consecutive duplicate vertices detected; they are dropped on cleaning with no change to the geometry.",
+          "rule_id": "duplicate_vertices",
+          "severity": "WARNING"
+        }
+      ],
+      "needs_review": false,
+      "plot_id": "sub-dup-vertices",
+      "scenario": "duplicate_vertices",
+      "source_geometry_type": "Polygon",
+      "title": "Duplicate vertices"
+    },
+    {
+      "blurb": "Spreadsheet wrote [lat, lon]; swapped, it lands outside Vietnam. Never auto-swap.",
+      "disposition": "NEEDS_REVIEW",
+      "findings": [
+        {
+          "disposition": "NEEDS_REVIEW",
+          "failing_coordinate": [
+            12.646,
+            108.046
+          ],
+          "human_reason": "Coordinate order looks swapped ([lat, lon] instead of [lon, lat]); this is the classic spreadsheet-export bug and is not safely auto-correctable -- a human must confirm the order.",
+          "rule_id": "lat_lon_swap",
+          "severity": "ERROR"
+        }
+      ],
+      "needs_review": true,
+      "plot_id": "sub-latlon-swap",
+      "scenario": "lat_lon_swapped_point",
+      "source_geometry_type": "Point",
+      "title": "Lat/lon swap"
+    },
+    {
+      "blurb": "EUDR GeoJSON v1.5 does not process interior rings. Dropping the hole changes the boundary.",
+      "disposition": "NEEDS_REVIEW",
+      "findings": [
+        {
+          "disposition": "NEEDS_REVIEW",
+          "failing_coordinate": null,
+          "human_reason": "Polygon has interior ring(s) (a hole). The EUDR GeoJson File Description v1.5 rejects interior rings; they cannot be silently dropped because doing so changes the plot boundary. The documented fix is to split the plot into two exterior-only polygons.",
+          "rule_id": "holes",
+          "severity": "WARNING"
+        }
+      ],
+      "needs_review": true,
+      "plot_id": "sub-hole-poly",
+      "scenario": "polygon_with_hole",
+      "source_geometry_type": "Polygon",
+      "title": "Doughnut (interior ring)"
+    },
+    {
+      "blurb": "Repair fragments one polygon into two. The fix would guess intent — escalate.",
+      "disposition": "NEEDS_REVIEW",
+      "findings": [
+        {
+          "disposition": "NEEDS_REVIEW",
+          "failing_coordinate": null,
+          "human_reason": "Invalid geometry; the repair fragmented a polygon into multiple parts, so it cannot be auto-applied without changing the plot's meaning -> human review.",
+          "rule_id": "invalid_geometry",
+          "severity": "ERROR"
+        }
+      ],
+      "needs_review": true,
+      "plot_id": "sub-bowtie",
+      "scenario": "self_intersecting_bowtie",
+      "source_geometry_type": "Polygon",
+      "title": "Self-intersecting bow-tie"
+    },
+    {
+      "blurb": "Art. 9(1)(d): ≥4 ha needs a perimeter polygon. A point cannot prove eligibility.",
+      "disposition": "NEEDS_REVIEW",
+      "findings": [
+        {
+          "disposition": "NEEDS_REVIEW",
+          "failing_coordinate": null,
+          "human_reason": "A single point was submitted but the asserted area (5.2 ha) is >= 4.0 ha, which requires a perimeter polygon (EUDR Art. 9(1)(d)). A point cannot prove the <=4 ha point-format eligibility -> human review.",
+          "rule_id": "geometry_type_vs_asserted_area",
+          "severity": "ERROR"
+        }
+      ],
+      "needs_review": true,
+      "plot_id": "sub-bigpoint",
+      "scenario": "over_4ha_point",
+      "source_geometry_type": "Point",
+      "title": "Point for a >4 ha plot"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # veritas-eudr
 
-[![ci](https://github.com/<owner>/veritas-eudr/actions/workflows/ci.yml/badge.svg)](https://github.com/<owner>/veritas-eudr/actions/workflows/ci.yml)
+[![ci](https://github.com/SanchayPahalwani/veritas-eudr/actions/workflows/ci.yml/badge.svg)](https://github.com/SanchayPahalwani/veritas-eudr/actions/workflows/ci.yml)
+
+**▶ Live demo:** https://web-demo-nine-nu.vercel.app/ — a static, pre-baked walkthrough of the full pipeline (no backend required).
 
 Under the EU Deforestation Regulation, the regulation *is* the definition of
 correctness. One wrong hectare calculation, or one blindly reprojected coordinate,
@@ -125,7 +127,7 @@ design judgments and what was deliberately left out.
 src/veritas_eudr/{ingest,validate,area,deforestation,risk,api,obs,whisp}/  pipeline.py  cli.py  db.py  domain.py  config.py
 policy/eudr_policy.yaml   migrations/  sql/functions/   tests/{fixtures,...}
 docker-compose.yml  Dockerfile  docker/   .github/workflows/ci.yml
-web/   deploy/   scripts/{fetch_data.sh,make_fixtures.py,benchmark_overlap.py,export_web_plots.py}
+web/   web-demo/   deploy/   scripts/{fetch_data.sh,make_fixtures.py,benchmark_overlap.py,export_web_plots.py,export_demo_data.py}
 README.md  DECISIONS.md  EVIDENCE.md  docs/investigations/
 ```
 

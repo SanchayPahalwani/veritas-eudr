@@ -1,0 +1,15 @@
+{
+  "consignment_id": "VN-DLK-2026-Q2",
+  "counts": {
+    "high": 7,
+    "low": 22,
+    "more-info-needed": 21
+  },
+  "generated_at": "2026-06-18T00:00:00+00:00",
+  "operator_name": "Đắk Lắk Highlands Robusta Cooperative",
+  "policy_version": "2026-06-17",
+  "run_id": "09937884b63dade7",
+  "source_fixtures": [
+    "tests/fixtures/points/coffee_points.geojson"
+  ]
+}

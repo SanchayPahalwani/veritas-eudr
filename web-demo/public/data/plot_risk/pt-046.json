@@ -1,0 +1,108 @@
+{
+  "area": {
+    "area_authority": "ST_Area(geom::geography)",
+    "area_ha_ease6933": 0.0,
+    "area_ha_local_utm": null,
+    "area_ha_webmercator": null,
+    "borderline": false,
+    "delta_6933_pct": 0.0,
+    "delta_webmercator_pct": null,
+    "measured_area_ha": 0.0,
+    "required_geometry_format": "point"
+  },
+  "assessed": true,
+  "plot_id": "pt-046",
+  "risk": {
+    "axes": [
+      {
+        "covered_fraction": 0.0,
+        "covered_ha": 0.0,
+        "dataset_name": "Hansen GFC-2025-v1.13 lossyear",
+        "dataset_version": "GFC-2025-v1.13",
+        "details": {
+          "band21_only": false,
+          "loss_fraction": 0.0,
+          "loss_ground_ha": 0.0,
+          "post_cutoff_bands": [],
+          "pre_cutoff_bands": []
+        },
+        "layer": "lossyear",
+        "note": "post_cutoff_bands=None; pre_cutoff_bands=None; post_loss_ground_ha=0.000000; loss_fraction=0.000000; band21_only=False",
+        "strategy": "fractional_overlap",
+        "value": 0.0
+      },
+      {
+        "covered_fraction": 0.0,
+        "covered_ha": null,
+        "dataset_name": "JRC GFC2020 V3",
+        "dataset_version": "V3",
+        "details": {},
+        "layer": "forest_2020",
+        "note": "forest_fraction=0.0000; inside_2020_forest=False",
+        "strategy": "zonal_majority",
+        "value": 0.0
+      },
+      {
+        "covered_fraction": 1.0,
+        "covered_ha": null,
+        "dataset_name": "ESA WorldCover v200",
+        "dataset_version": "v200",
+        "details": {},
+        "layer": "landcover_context",
+        "note": "cropland_fraction=1.0000; cropland_context=True (land-cover CONTEXT only, not commodity identification)",
+        "strategy": "zonal_majority",
+        "value": 40.0
+      }
+    ],
+    "boundary_uncertain": false,
+    "cutoff_date": "2020-12-31",
+    "evidence": [
+      {
+        "covered_fraction": 0.0,
+        "dataset_name": "Hansen GFC-2025-v1.13 lossyear",
+        "dataset_version": "GFC-2025-v1.13",
+        "pixel_value": 0.0,
+        "plot_id": "pt-046",
+        "rule_id": "low.outside_2020_forest",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "low|post_cutoff_loss_fraction=0.000000"
+      },
+      {
+        "covered_fraction": 0.0,
+        "dataset_name": "JRC GFC2020 V3",
+        "dataset_version": "V3",
+        "pixel_value": 0.0,
+        "plot_id": "pt-046",
+        "rule_id": "low.outside_2020_forest",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "low|outside_2020_forest"
+      },
+      {
+        "covered_fraction": 1.0,
+        "dataset_name": "ESA WorldCover v200",
+        "dataset_version": "v200",
+        "pixel_value": 40.0,
+        "plot_id": "pt-046",
+        "rule_id": "low.outside_2020_forest",
+        "run_id": "09937884b63dade7",
+        "ts": "2026-06-18T00:00:00+00:00",
+        "verdict": "low|cropland_context"
+      }
+    ],
+    "plot_id": "pt-046",
+    "rationale": "Outside the JRC 2020 forest baseline; no forest at the cutoff to have been cleared.",
+    "risk": "low",
+    "whisp_risk_pcrop": "Low"
+  },
+  "validation": {
+    "disposition": "AUTO_VALID",
+    "findings": [],
+    "needs_review": false,
+    "notes": [],
+    "plot_id": "pt-046",
+    "repaired_geometry_wkt": null,
+    "source_geometry_type": "Point"
+  }
+}
