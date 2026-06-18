@@ -40,6 +40,9 @@ import json
 from datetime import date, timedelta
 from typing import Any
 
+# Reuse the exact, already-committed map exporter so plots.geojson stays in lockstep
+# with web/plots.geojson (same property contract, same rounding, same ordering).
+from export_web_plots import build_feature_collection  # noqa: E402  (script-local import)
 from shapely.geometry import Point, Polygon
 
 from veritas_eudr import area as area_mod
@@ -48,10 +51,6 @@ from veritas_eudr.ingest import parse_submission
 from veritas_eudr.pipeline import PlotOutcome, _run_id_from_submission, process_features
 from veritas_eudr.risk import build_dds, make_verification_number
 from veritas_eudr.validate import validate_plot
-
-# Reuse the exact, already-committed map exporter so plots.geojson stays in lockstep
-# with web/plots.geojson (same property contract, same rounding, same ordering).
-from export_web_plots import build_feature_collection  # noqa: E402  (script-local import)
 
 # --------------------------------------------------------------------------- #
 # Paths + demo identity
