@@ -3,8 +3,9 @@
 These cover the fixture *contract* the wave-2 test agents depend on:
 
 (a) idempotent regeneration -- running make_fixtures into a temp copy of the repo
-    reproduces byte-identical rasters and JSON (seeded, deterministic); the
-    committed files also exist and load.
+    reproduces the committed fixtures (seeded, deterministic): text fixtures
+    byte-for-byte, rasters by content (pixels + georeferencing), since GDAL's
+    TIFF container bytes vary across builds/OS; the committed files also load.
 (b) manifest.json schema -- required keys, value domains, AOI containment, and
     per-feature expected_risk_tier / expected_disposition vocabularies.
 (c) each raster opens with rasterio at EPSG:4326 with the expected value ranges,
@@ -25,6 +26,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
 import pytest
 import rasterio
 
@@ -101,14 +103,35 @@ def _load_make_fixtures():
     return mod
 
 
+def _assert_raster_equivalent(committed: Path, regenerated: Path, rel: str) -> None:
+    """Compare two rasters by *content*, not file bytes.
+
+    GDAL serializes identical pixel data into byte-different GeoTIFF containers
+    across builds / OS / arch (IFD tag ordering, offsets, the embedded driver
+    version string), so raw byte-equality is not portable -- it holds only on the
+    exact build that wrote the committed fixture. The idempotency that actually
+    matters is identical pixels + georeferencing, which is deterministic from the
+    seeded generator regardless of platform.
+    """
+    with rasterio.open(committed) as a, rasterio.open(regenerated) as b:
+        assert (a.width, a.height, a.count) == (b.width, b.height, b.count), f"{rel}: shape"
+        assert a.dtypes == b.dtypes, f"{rel}: dtype"
+        assert a.crs == b.crs, f"{rel}: CRS"
+        assert a.transform == b.transform, f"{rel}: transform"
+        assert a.nodatavals == b.nodatavals, f"{rel}: nodata"
+        assert np.array_equal(a.read(), b.read()), f"{rel}: pixel data"
+
+
 def test_regeneration_is_idempotent(tmp_path: Path):
-    """Regenerating into a temp copy reproduces byte-identical files.
+    """Regenerating into a temp copy reproduces the committed fixtures.
 
     Runs make_fixtures.py as a subprocess against a temp copy of the repo (so the
-    committed tree is never touched), then byte-compares the regenerated fixtures
-    against the committed ones.  veritas_eudr.config is already importable via the
-    installed venv; load_policy() resolves policy/ absolutely from the package
-    location, so no local copy is needed.
+    committed tree is never touched), then compares the regenerated fixtures
+    against the committed ones: text fixtures byte-for-byte (portable), rasters by
+    content (pixels + georeferencing) since GDAL's TIFF container bytes vary across
+    builds/OS -- see ``_assert_raster_equivalent``.  veritas_eudr.config is already
+    importable via the installed venv; load_policy() resolves policy/ absolutely
+    from the package location, so no local copy is needed.
     """
     repo_copy = tmp_path / "repo"
     (repo_copy / "scripts").mkdir(parents=True)
@@ -135,6 +158,9 @@ def test_regeneration_is_idempotent(tmp_path: Path):
         "manifest.json",
     ]
     for rel in compare:
+        if rel.endswith(".tif"):
+            _assert_raster_equivalent(FIX / rel, regen_fix / rel, rel)
+            continue
         committed = (FIX / rel).read_bytes()
         regenerated = (regen_fix / rel).read_bytes()
         assert committed == regenerated, f"non-idempotent regeneration for {rel}"
